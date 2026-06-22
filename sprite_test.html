@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
+<style>
+  body { background: #111; color: #fff; font-family: monospace; padding: 20px; }
+  canvas { border: 1px solid #444; display: block; margin: 4px; background: #333; }
+  .row { display: flex; align-items: flex-start; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  h3 { color: #FFD700; margin: 8px 0; }
+  .label { color: #aaa; min-width: 80px; font-size: 12px; padding-top: 4px; }
+  .spec { background: #1a2a1a; border: 1px solid #4a8a4a; border-radius: 8px; padding: 16px; margin-bottom: 24px; color: #cfc; line-height: 1.8; }
+  .spec strong { color: #FFD700; }
+</style></head><body>
+<h2>Sprite Sheet Validator — sesinho.png</h2>
+
+<div class="spec">
+  <strong>Formato esperado pelo jogo:</strong><br>
+  • Tamanho total: <strong>512×512px</strong> (ou qualquer múltiplo de 4)<br>
+  • Grid: <strong>4 colunas × 4 linhas</strong> → cada célula 128×128px<br>
+  • Fundo: <strong>transparente</strong> (PNG com alpha)<br>
+  • Row 0: idle (4 frames) | Row 1: walk (4 frames) | Row 2: run (4 frames) | Row 3: jump (4 frames)<br>
+  • Personagem <strong>centralizado</strong> em cada célula, sem tocar nas bordas (~10px de margem)
+</div>
+
+<div id="out"></div>
+<script>
+const img = new Image();
+img.src = 'sesinho.png';
+img.onload = () => {
+  const out = document.getElementById('out');
+  const W = img.naturalWidth, H = img.naturalHeight;
+  const COLS = 4, ROWS = 4;
+  const fw = W / COLS, fh = H / ROWS;
+  const rowNames = ['Row 0 — Idle', 'Row 1 — Walk', 'Row 2 — Run', 'Row 3 — Jump'];
+
+  const info = document.createElement('p');
+  info.style.color = W === 512 && H === 512 ? '#4f4' : '#f84';
+  info.textContent = `Imagem atual: ${W}×${H}px | Célula: ${fw}×${fh}px ${W===512&&H===512?'✓ Dimensões corretas':'⚠ Recomendado: 512×512px'}`;
+  out.appendChild(info);
+
+  for (let row = 0; row < ROWS; row++) {
+    const sec = document.createElement('div');
+    sec.innerHTML = `<h3>${rowNames[row]}</h3>`;
+    const rowDiv = document.createElement('div');
+    rowDiv.className = 'row';
+    for (let col = 0; col < COLS; col++) {
+      const wrap = document.createElement('div');
+      wrap.style.textAlign = 'center';
+      const c = document.createElement('canvas');
+      c.width = 128; c.height = 128;
+      const cx = c.getContext('2d');
+      // Checkerboard bg to show transparency
+      for (let ty = 0; ty < 4; ty++) for (let tx = 0; tx < 4; tx++) {
+        cx.fillStyle = (tx+ty)%2===0 ? '#444' : '#555';
+        cx.fillRect(tx*32, ty*32, 32, 32);
+      }
+      cx.drawImage(img, col * fw, row * fh, fw, fh, 0, 0, 128, 128);
+      // Draw cell border
+      cx.strokeStyle = 'rgba(255,200,0,0.6)'; cx.lineWidth = 2;
+      cx.strokeRect(1, 1, 126, 126);
+      const lbl = document.createElement('div');
+      lbl.style.cssText = 'color:#888;font-size:11px;margin-top:2px';
+      lbl.textContent = `Frame ${col+1}`;
+      wrap.appendChild(c);
+      wrap.appendChild(lbl);
+      rowDiv.appendChild(wrap);
+    }
+    sec.appendChild(rowDiv);
+    out.appendChild(sec);
+  }
+};
+img.onerror = () => {
+  document.getElementById('out').innerHTML = '<p style="color:#f44">sesinho.png não encontrado nesta pasta.</p>';
+};
+</script>
+</body></html>

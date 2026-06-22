@@ -1,0 +1,1695 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SESI 80 ANOS — FRAGMENTOS DA HISTÓRIA</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root{
+      --sesi-blue:#003087;
+      --sesi-blue-2:#0047b8;
+      --sesi-yellow:#ffd100;
+      --ink:#001a4d;
+    }
+
+    body{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      background:#091327;
+      font-family:"Nunito",system-ui,-apple-system,sans-serif;
+    }
+
+    #modal-overlay{
+      position:fixed; inset:0;
+      background:rgba(0,0,0,.84);
+      display:flex; align-items:center; justify-content:center;
+      z-index:1000;
+    }
+
+    #modal{
+      width:min(1120px, 98vw);
+      height:min(780px, 92vh);
+      display:flex; flex-direction:column;
+      background:#0b1730;
+      border:2px solid #1f4ea3;
+      border-radius:16px;
+      overflow:hidden;
+      box-shadow:0 20px 80px rgba(0,0,0,.45);
+    }
+
+    #modal-header{
+      background:linear-gradient(135deg,var(--sesi-blue) 0%,var(--sesi-blue-2) 60%,var(--sesi-blue) 100%);
+      border-bottom:3px solid var(--sesi-yellow);
+      padding:10px 14px;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:10px;
+      position:relative;
+      overflow:hidden;
+    }
+    #modal-header::after{
+      content:"";
+      position:absolute; inset:0;
+      background:repeating-linear-gradient(
+        -45deg,
+        rgba(255,255,255,.06) 0 8px,
+        rgba(255,255,255,0) 8px 16px
+      );
+      pointer-events:none;
+    }
+
+    .logo-text{
+      z-index:1;
+      white-space:nowrap;
+      color:var(--sesi-yellow);
+      text-transform:uppercase;
+      font-weight:900;
+      letter-spacing:.8px;
+      font-size:1.05rem;
+      text-shadow:2px 2px 0 rgba(0,0,0,.35);
+    }
+    .logo-text span{ color:#fff; }
+
+    .hud{
+      z-index:1;
+      display:flex; align-items:center; gap:8px; flex-wrap:wrap;
+      justify-content:center;
+    }
+    .hud-item{
+      background:rgba(5,16,40,.85);
+      border:1px solid #5ea2ff;
+      border-radius:10px;
+      padding:4px 8px;
+      color:#e9f2ff;
+      font-weight:700;
+      font-size:.76rem;
+      display:flex; align-items:center; gap:6px;
+    }
+    .hud-item .val{ color:var(--sesi-yellow); font-size:.9rem; }
+
+    #btn-close{
+      z-index:1;
+      width:30px; height:30px;
+      border-radius:8px;
+      border:1px solid #ff6b6b;
+      background:#b90c2a;
+      color:#fff;
+      font-weight:900;
+      cursor:pointer;
+      display:grid; place-items:center;
+      transition:.15s;
+    }
+    #btn-close:hover{ background:#d31133; transform:translateY(-1px); }
+
+    #game-wrap{
+      position:relative;
+      flex:1;
+      overflow:hidden;
+      background:#87ceeb;
+    }
+
+    canvas{
+      width:100%; height:100%;
+      display:block;
+      image-rendering:pixelated;
+    }
+
+    #controls-hint{
+      position:absolute;
+      top:10px; right:10px;
+      z-index:7;
+      background:rgba(0,0,0,.5);
+      color:#d8e6ff;
+      border:1px solid var(--sesi-yellow);
+      border-radius:10px;
+      font-size:.72rem;
+      padding:6px 10px;
+      line-height:1.6;
+      backdrop-filter: blur(2px);
+    }
+    #controls-hint kbd{
+      font-family:inherit;
+      background:#172338;
+      border:1px solid #4d6ba3;
+      color:var(--sesi-yellow);
+      border-radius:4px;
+      padding:1px 5px;
+      margin-right:2px;
+      font-size:.68rem;
+    }
+
+    /* Balão */
+    #story-panel{
+      position:absolute;
+      left:0; top:0;
+      width:340px;
+      z-index:12;
+      pointer-events:none;
+      color:var(--ink);
+      background:
+        radial-gradient(circle at 1px 1px, rgba(0,0,0,.06) 1px, transparent 0) 0 0 / 8px 8px,
+        #fff;
+      border:4px solid var(--ink);
+      border-radius:18px;
+      box-shadow:6px 6px 0 var(--sesi-yellow), 0 8px 18px rgba(0,0,0,.25);
+      padding:12px 14px;
+      line-height:1.45;
+      font-size:.8rem;
+      transition:opacity .18s;
+    }
+    #story-panel strong{
+      display:block;
+      margin-bottom:4px;
+      font-size:.86rem;
+      text-transform:uppercase;
+      font-weight:900;
+    }
+    #story-panel.hidden{ opacity:0; }
+
+    #story-panel.tail-right::after{
+      content:'';
+      position:absolute;
+      left:-16px; bottom:18px;
+      width:0;height:0;
+      border-top:10px solid transparent;
+      border-bottom:10px solid transparent;
+      border-right:16px solid var(--ink);
+    }
+    #story-panel.tail-right::before{
+      content:'';
+      position:absolute;
+      left:-12px; bottom:20px;
+      width:0;height:0;
+      border-top:8px solid transparent;
+      border-bottom:8px solid transparent;
+      border-right:12px solid #fff;
+      z-index:1;
+    }
+    #story-panel.tail-left::after{
+      content:'';
+      position:absolute;
+      right:-16px; bottom:18px;
+      width:0;height:0;
+      border-top:10px solid transparent;
+      border-bottom:10px solid transparent;
+      border-left:16px solid var(--ink);
+    }
+    #story-panel.tail-left::before{
+      content:'';
+      position:absolute;
+      right:-12px; bottom:20px;
+      width:0;height:0;
+      border-top:8px solid transparent;
+      border-bottom:8px solid transparent;
+      border-left:12px solid #fff;
+      z-index:1;
+    }
+
+    #fx-layer{
+      position:absolute; inset:0;
+      z-index:10;
+      pointer-events:none;
+    }
+    .fx-text{
+      position:absolute;
+      color:#fff;
+      font-weight:900;
+      font-size:1.15rem;
+      text-shadow:2px 2px 0 #003087, 0 0 10px rgba(0,0,0,.5);
+      animation:fxPop .72s ease-out forwards;
+      white-space:nowrap;
+    }
+    .fx-onom{
+      position:absolute;
+      pointer-events:none;
+      z-index:11;
+      width:96px;
+      height:auto;
+      animation:fxImgPop .75s ease-out forwards;
+      filter:drop-shadow(2px 3px 0 #000);
+    }
+    @keyframes fxPop{
+      0%{ transform:translateY(0) scale(.8); opacity:0; }
+      20%{ opacity:1; }
+      100%{ transform:translateY(-34px) scale(1.05); opacity:0; }
+    }
+    @keyframes fxImgPop{
+      0%{ transform:translateY(0) scale(.75) rotate(-4deg); opacity:0; }
+      20%{ opacity:1; }
+      100%{ transform:translateY(-36px) scale(1.08) rotate(0deg); opacity:0; }
+    }
+
+    /* Toast dos fragmentos */
+    #fragment-toast{
+      position:absolute;
+      top:14px; left:50%;
+      transform:translateX(-50%);
+      z-index:20;
+      max-width:min(92vw, 920px);
+      text-align:left;
+      padding:12px 14px;
+      border-radius:10px;
+      border:3.052px solid #000;
+      background:#FFCE1F;
+      box-shadow:3px 4px 0 0 #000;
+      color:#000;
+    }
+    #fragment-toast strong{
+      display:block;
+      font-size:.96rem;
+      color:#000;
+      margin-bottom:4px;
+      text-transform:uppercase;
+      font-weight:900;
+    }
+    #fragment-toast span{
+      display:block;
+      margin-top:2px;
+      font-size:.84rem;
+      line-height:1.45;
+      color:#000;
+    }
+    #fragment-toast.hidden{ display:none; }
+
+    /* Telas */
+    #screen{
+      position:absolute; inset:0;
+      z-index:30;
+      background:rgba(5,12,30,.9);
+      display:flex; flex-direction:column;
+      justify-content:center;
+      gap:16px;
+      padding:24px;
+    }
+    #screen.intro-bg{
+      background:
+        linear-gradient(rgba(4,10,24,.62), rgba(4,10,24,.78)),
+        url('imagens/cenarios/cenario-fase2quadrinhos.png') center/cover no-repeat;
+    }
+    #screen.title-bg{
+      background:
+        url('imagens/tela-inicial.png') center/cover no-repeat;
+      justify-content:flex-end;
+      padding-bottom:54px;
+    }
+    #screen.title-bg #screen-content{ display:none; }
+    #screen.title-bg #btn-start{
+      font-size:1.25rem;
+      padding:16px 48px;
+    }
+
+    #screen-content{
+      width:min(980px, 94%);
+      margin:0 auto;
+      display:grid;
+      grid-template-columns:1.2fr .8fr;
+      gap:18px;
+      align-items:center;
+    }
+    #screen-copy h1{
+      font-family:"Bangers",cursive;
+      font-weight:400;
+      font-size:2.2rem;
+      line-height:1.04;
+      color:var(--sesi-yellow);
+      text-shadow:3px 3px 8px rgba(0,0,0,.8);
+      margin-bottom:10px;
+      text-align:left;
+      text-transform:uppercase;
+      letter-spacing:1px;
+    }
+    #screen-copy p{
+      color:#d7e7ff;
+      text-align:left;
+      line-height:1.6;
+      font-size:1rem;
+      max-width:700px;
+    }
+
+    .screen-desc-wrap{ display:grid; gap:8px; }
+    .desc-card{
+      background:rgba(0,0,0,.24);
+      border:2px solid rgba(255,255,255,.22);
+      border-radius:12px;
+      padding:10px 12px;
+      display:grid; gap:4px;
+    }
+    .desc-card .line{
+      color:#eaf2ff;
+      line-height:1.42;
+      font-size:.97rem;
+    }
+    .screen-desc-wrap .line.line-strong{
+      font-weight:900;
+      color:#fff;
+      text-transform:uppercase;
+      letter-spacing:.4px;
+    }
+    .desc-card .tw-caret{
+      display:none;
+      color:var(--sesi-yellow);
+      font-weight:900;
+      margin-left:1px;
+      animation:twBlink 1s steps(1) infinite;
+    }
+    .desc-card .line.tw-active .tw-caret,
+    .desc-card .line.tw-final .tw-caret{ display:inline; }
+    @keyframes twBlink{
+      0%,50%{ opacity:1; }
+      50.01%,100%{ opacity:0; }
+    }
+
+    #screen .score-display{
+      margin-top:10px;
+      color:#fff;
+      font-size:1.1rem;
+      font-weight:700;
+    }
+    #screen .score-display span{ color:var(--sesi-yellow); }
+
+    #screen-art-wrap{
+      display:flex; align-items:center; justify-content:center;
+    }
+    #screen-art-wrap.hidden{ display:none; }
+    #screen-art{
+      width:min(320px, 94%);
+      max-height:320px;
+      object-fit:contain;
+      filter:drop-shadow(0 10px 20px rgba(0,0,0,.45));
+    }
+
+    #btn-start{
+      margin:0 auto;
+      background:linear-gradient(135deg,var(--sesi-yellow),#ff9800);
+      color:#002d7d;
+      border:none;
+      border-radius:999px;
+      font-weight:900;
+      letter-spacing:.5px;
+      font-size:1rem;
+      padding:12px 30px;
+      cursor:pointer;
+      box-shadow:0 4px 20px rgba(255,200,0,.35);
+      transition:.15s;
+    }
+    #btn-start:hover{ transform:scale(1.04); }
+
+    @media (max-width: 900px){
+      .logo-text{ font-size:.95rem; }
+      .hud-item{ font-size:.68rem; }
+      #screen-copy h1{ font-size:1.9rem; }
+      #screen-copy p{ font-size:.92rem; }
+      #story-panel{ width:260px; }
+    }
+    @media (max-width: 760px){
+      #screen-content{ grid-template-columns:1fr; }
+      #screen-copy h1, #screen-copy p{ text-align:center; margin-left:auto; margin-right:auto; }
+      #controls-hint{ font-size:.66rem; }
+    }
+  </style>
+</head>
+<body>
+<div id="modal-overlay">
+  <div id="modal">
+    <div id="modal-header">
+      <div class="logo-text">SESI <span>80 ANOS</span></div>
+      <div class="hud">
+        <div class="hud-item">⭐ <span class="val" id="hud-stars">0</span>/240</div>
+        <div class="hud-item">🧩 <span class="val" id="hud-fragments">0</span>/15</div>
+        <div class="hud-item">❤️ <span class="val" id="hud-lives">3</span></div>
+        <div class="hud-item">🏁 FASE <span class="val" id="hud-level">1</span>/3</div>
+      </div>
+      <button id="btn-close" title="Fechar">✕</button>
+    </div>
+
+    <div id="game-wrap">
+      <canvas id="gameCanvas"></canvas>
+
+      <div id="controls-hint">
+        <kbd>←</kbd><kbd>→</kbd> mover &nbsp;
+        <kbd>↑</kbd><kbd>Espaço</kbd> pular
+      </div>
+
+      <div id="story-panel" class="hidden">
+        <strong id="story-title"></strong>
+        <span id="story-text"></span>
+      </div>
+
+      <div id="fx-layer"></div>
+
+      <div id="fragment-toast" class="hidden">
+        <strong>FRAGMENTO RECUPERADO!</strong>
+        <span id="fragment-marco"></span>
+      </div>
+
+      <div id="screen" class="intro-bg">
+        <div id="screen-content">
+          <div id="screen-copy">
+            <h1 id="screen-title">SESINHO<br>FRAGMENTOS DA HISTÓRIA</h1>
+            <p id="screen-desc"></p>
+            <div class="score-display" id="screen-score" style="display:none">
+              PONTUAÇÃO: <span id="final-score">0</span>
+            </div>
+          </div>
+          <div id="screen-art-wrap">
+            <img id="screen-art" src="imagens/personagens/sesinho-solo.png" alt="Sesinho" />
+          </div>
+        </div>
+        <button id="btn-start">▶ JOGAR AGORA</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ===== Base =====
+  const canvas = document.getElementById('gameCanvas');
+  const ctx = canvas.getContext('2d');
+  const wrap = document.getElementById('game-wrap');
+
+  const storyPanel = document.getElementById('story-panel');
+  const storyTitle = document.getElementById('story-title');
+  const storyText = document.getElementById('story-text');
+
+  const fragmentToast = document.getElementById('fragment-toast');
+  const fragmentMarco = document.getElementById('fragment-marco');
+  const fxLayer = document.getElementById('fx-layer');
+
+  const screenEl = document.getElementById('screen');
+  const screenTitle = document.getElementById('screen-title');
+  const screenDesc = document.getElementById('screen-desc');
+  const screenArtWrap = document.getElementById('screen-art-wrap');
+  const screenArt = document.getElementById('screen-art');
+  const btnStart = document.getElementById('btn-start');
+
+  function resizeCanvas() {
+    canvas.width = wrap.clientWidth;
+    canvas.height = wrap.clientHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  // ===== Assets =====
+  const bgImgs = [1,2,3].map(n => {
+    const img = new Image();
+    img.src = `imagens/cenarios/cenario-fase${n}.png`;
+    return img;
+  });
+
+  const introBgImg = new Image();
+  introBgImg.src = `imagens/cenarios/cenario-fase2quadrinhos.png`;
+
+  const titleBgImg = new Image();
+  titleBgImg.src = `imagens/tela-inicial.png`;
+
+  const spriteImg = new Image();
+  spriteImg.src = 'imagens/personagens/sesinho-verde.png';
+
+  const sesinhoSoloImg = new Image();
+  sesinhoSoloImg.src = 'imagens/personagens/sesinho-solo.png';
+
+  const enemyImgs = {
+    engrenildo: new Image(),
+    papelito: new Image(),
+    disquetildo: new Image(),
+    bitdrone: new Image(),
+  };
+  enemyImgs.engrenildo.src = 'imagens/personagens/engrenildo.png';
+  enemyImgs.papelito.src = 'imagens/personagens/papelito.png';
+  enemyImgs.disquetildo.src = 'imagens/personagens/disquetildo.png';
+  enemyImgs.bitdrone.src = 'imagens/personagens/bitdrone-voador.png';
+
+  const fxImgs = {
+    BOING: new Image(),
+    POF: new Image(),
+    POW: new Image(),
+    TCHIBUM: new Image(),
+    ZUP: new Image(),
+  };
+  fxImgs.BOING.src = 'imagens/onomatopeias/boing.png';
+  fxImgs.POF.src = 'imagens/onomatopeias/pof.png';
+  fxImgs.POW.src = 'imagens/onomatopeias/pow.png';
+  fxImgs.TCHIBUM.src = 'imagens/onomatopeias/tchibum.png';
+  fxImgs.ZUP.src = 'imagens/onomatopeias/zup.png';
+
+  // ===== Conteúdo =====
+  const INTRO_TEXT = `Ao longo de 80 anos, o SESI acumulou uma história de transformação.
+Alguns fragmentos dessa trajetória foram espalhados pelas páginas do tempo.
+Ajude o Sesinho a recuperá-los e revele a placa comemorativa dos 80 anos do SESI.`;
+
+  const PHASES = {
+    1: {
+      phaseLabel: "A ORIGEM",
+      enemyName: "ENGRENILDO",
+      enemyIntro: "Engrenildo está à solta! Não deixe essa engrenagem travessa atrapalhar sua missão.",
+      sesinhoReaction: "Uma engrenagem andando sozinha? Isso não parece nada normal!",
+      closing: "Estamos descobrindo como tudo começou!",
+      fragments: [
+        {
+          x: 850,
+          hint: "Você sabe quando começou essa grande história?",
+          marco: "1946 - Criação do SESI por empresários brasileiros."
+        },
+        {
+          x: 1900,
+          hint: "O que será que ajudava os trabalhadores lá no começo?",
+          marco: "1950 - Criação das Cozinhas Distritais."
+        },
+        {
+          x: 3000,
+          hint: "Será que encontramos algo relacionado à alimentação?",
+          marco: "1954 - Expansão dos postos médicos."
+        },
+        {
+          x: 4300,
+          hint: "Onde os trabalhadores buscavam cuidados com a saúde?",
+          marco: "Saúde, alimentação e moradia para trabalhadores."
+        },
+        {
+          x: 5600,
+          hint: "Quais eram as principais necessidades das famílias naquela época?",
+          marco: "Nasce uma instituição dedicada ao bem-estar da indústria."
+        }
+      ]
+    },
+    2: {
+      phaseLabel: "TRANSFORMANDO VIDAS",
+      enemyName: "PAPELITO",
+      enemyIntro: "Papelito está causando confusão! Desvie das suas trapalhadas e continue a busca.",
+      sesinhoReaction: "Ei! Esse papel está bagunçando os registros históricos!",
+      closing: "Cada fragmento mostra vidas sendo transformadas!",
+      fragments: [
+        {
+          x: 900,
+          hint: "Será que aprender a ler também fez parte dessa história?",
+          marco: "1964 - Cursos de alfabetização para trabalhadores."
+        },
+        {
+          x: 2100,
+          hint: "Como o conhecimento ajudou a transformar vidas?",
+          marco: "1972 - Centros esportivos para famílias industriárias."
+        },
+        {
+          x: 3300,
+          hint: "Além de estudar, qual outra atividade aproximava as pessoas?",
+          marco: "Expansão das atividades culturais."
+        },
+        {
+          x: 4700,
+          hint: "A diversão também pode fazer parte da educação?",
+          marco: "Atendimento às famílias dos trabalhadores."
+        },
+        {
+          x: 6000,
+          hint: "Quem mais foi beneficiado pelas ações do SESI?",
+          marco: "Educação, esporte e cultura transformando gerações."
+        }
+      ]
+    },
+    3: {
+      phaseLabel: "INOVAÇÃO E FUTURO",
+      enemyName: "DISQUETILDO",
+      enemyIntro: "Disquetildo entrou no sistema! Recupere os fragmentos antes que ele os transforme em pixels! 🎮",
+      sesinhoReaction: "Rápido! Antes que tudo vire código binário!",
+      closing: "Falta pouco para completar os 80 anos de história!",
+      fragments: [
+        {
+          x: 900,
+          hint: "Como a tecnologia ajudou a proteger os trabalhadores?",
+          marco: "1985 - Programas de segurança nas fábricas."
+        },
+        {
+          x: 2100,
+          hint: "Quantas conquistas cabem em meio século de história?",
+          marco: "1996 - SESI completa 50 anos."
+        },
+        {
+          x: 3500,
+          hint: "O que acontece quando educação e tecnologia se unem?",
+          marco: "2008 - Expansão das escolas de Ensino Médio com foco em ciência e tecnologia."
+        },
+        {
+          x: 5000,
+          hint: "Robôs também fazem parte desta aventura?",
+          marco: "2013 - Investimento em torneios de robótica."
+        },
+        {
+          x: 6200,
+          hint: "Qual será o segredo para continuar transformando o futuro?",
+          marco: "Hoje: líder em educação, saúde, bem-estar e segurança do trabalho."
+        }
+      ]
+    }
+  };
+
+  // ===== Estado =====
+  const game = {
+    running: false,
+    paused: false,
+    level: 1,
+    lives: 3,
+    cameraX: 0,
+    levelWidth: 7000,
+
+    starsCollected: 0,
+    fragmentsCollected: 0,
+    phaseStars: 0,
+    phaseFragments: 0,
+
+    foundMilestones: {1: [], 2: [], 3: []},
+    enemyIntroShown: new Set(),
+  };
+
+  const GROUND_HEIGHT = 40;
+  const PLAYER_DRAW_SCALE = 1.32;
+  const ENEMY_DRAW_SCALE = 1.28;
+  const SPRITE_COLS = 4;
+
+  function groundY() { return canvas.height - GROUND_HEIGHT; }
+
+  const ANIM = {
+    idle: { rowY: 24,  rowH: 322, frames: 4, speed: 12 },
+    walk: { rowY: 363, rowH: 294, frames: 4, speed: 8  },
+    run:  { rowY: 672, rowH: 284, frames: 4, speed: 6  },
+    jump: { rowY: 956, rowH: 285, frames: 4, speed: 10 },
+  };
+
+  const player = {
+    x: 80, y: 0,
+    w: 80, h: 100,
+    vx: 0, vy: 0,
+    onGround: false,
+    facing: 1,
+    anim: 'idle',
+    frame: 0,
+    frameTick: 0,
+    invincible: 0,
+  };
+
+  const keys = {};
+  document.addEventListener('keydown', e => {
+    keys[e.code] = true;
+    if (e.code.startsWith('Arrow') || e.code === 'Space') e.preventDefault();
+  });
+  document.addEventListener('keyup', e => { keys[e.code] = false; });
+
+  const GRAVITY = 0.55;
+  const JUMP_FORCE = -13;
+  const MOVE_SPEED = 4;
+
+  let platforms = [];
+  let enemies = [];
+  let stars = [];
+  let fragments = [];
+  let lifePickup = null;
+  let goalX = 0;
+  let tick = 0;
+  let raf = 0;
+  let toastTimeout = null;
+  let storyTimeout = null;
+  let typewriterTimer = null;
+  const particles = [];
+
+  const offscreen = document.createElement('canvas');
+  const offCtx = offscreen.getContext('2d');
+
+  function requestFrame() {
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(gameLoop);
+  }
+
+  function rectIntersect(a, b) {
+    return a.x < b.x + b.w && a.x + a.w > b.x &&
+           a.y < b.y + b.h && a.y + a.h > b.y;
+  }
+
+  function escapeHtml(str){
+    return String(str)
+      .replaceAll('&','&')
+      .replaceAll('<','<')
+      .replaceAll('>','>')
+      .replaceAll('"','&quot;')
+      .replaceAll("'","&#039;");
+  }
+
+  function formatScreenDesc(desc) {
+    const lines = String(desc)
+      .split('\n')
+      .map(l => l.trimEnd())
+      .filter(l => l.length);
+
+    const isStrongLine = (line) => {
+      const t = line.toUpperCase();
+      return (
+        t.startsWith('FASE ') ||
+        t === 'MARCOS ENCONTRADOS:' ||
+        t === 'MARCOS ENCONTRADOS'
+      );
+    };
+
+    return `
+      <div class="screen-desc-wrap">
+        <div class="desc-card">
+          ${lines.map(line => `
+            <div class="line ${isStrongLine(line) ? 'line-strong' : ''}" data-full="${escapeHtml(line)}">
+              <span class="tw-text"></span><span class="tw-caret">▌</span>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  function runTypewriter() {
+    clearTimeout(typewriterTimer);
+    const lineEls = [...screenDesc.querySelectorAll('.line')];
+    if (!lineEls.length) return;
+
+    lineEls.forEach(el => {
+      const t = el.querySelector('.tw-text');
+      if (t) t.textContent = '';
+      el.classList.remove('tw-active', 'tw-final');
+    });
+
+    let li = 0, ci = 0;
+    const charSpeed = 45;
+    const linePause = 420;
+    lineEls[0].classList.add('tw-active');
+
+    function step() {
+      const el = lineEls[li];
+      const txtEl = el.querySelector('.tw-text');
+      const full = el.dataset.full || '';
+
+      if (ci <= full.length) {
+        txtEl.textContent = full.slice(0, ci);
+        ci++;
+        typewriterTimer = setTimeout(step, charSpeed);
+      } else {
+        el.classList.remove('tw-active');
+        li++; ci = 0;
+        if (li < lineEls.length) {
+          lineEls[li].classList.add('tw-active');
+          typewriterTimer = setTimeout(step, linePause);
+        } else {
+          lineEls[lineEls.length - 1].classList.add('tw-final');
+        }
+      }
+    }
+
+    step();
+  }
+
+  function popFX(text, worldX, worldY) {
+    const key = String(text).replace('!', '').toUpperCase();
+
+    if (fxImgs[key]) {
+      const img = document.createElement('img');
+      img.className = 'fx-onom';
+      img.src = fxImgs[key].src;
+      img.style.left = `${worldX - game.cameraX - 42}px`;
+      img.style.top = `${worldY - 28}px`;
+      fxLayer.appendChild(img);
+      setTimeout(() => img.remove(), 760);
+      return;
+    }
+
+    const el = document.createElement('div');
+    el.className = 'fx-text';
+    el.textContent = text;
+    el.style.left = `${worldX - game.cameraX}px`;
+    el.style.top = `${worldY}px`;
+    fxLayer.appendChild(el);
+    setTimeout(() => el.remove(), 700);
+  }
+
+  function showFragmentToast(marco) {
+    fragmentMarco.textContent = marco;
+    fragmentToast.classList.remove('hidden');
+    clearTimeout(toastTimeout);
+    toastTimeout = setTimeout(() => fragmentToast.classList.add('hidden'), 9000);
+  }
+
+  function hideStoryBubble() {
+    clearTimeout(storyTimeout);
+    storyPanel.classList.add('hidden');
+    storyPanel.classList.remove('tail-left', 'tail-right');
+  }
+
+  function showScreen(title, desc, btnText, callback, opts = {}) {
+    screenTitle.innerHTML = String(title).toUpperCase().replaceAll('\n', '<br>');
+    screenDesc.innerHTML = formatScreenDesc(desc);
+    runTypewriter();
+    btnStart.textContent = btnText;
+
+    if (opts.artSrc) {
+      screenArt.src = opts.artSrc;
+      screenArtWrap.classList.remove('hidden');
+    } else {
+      screenArt.src = sesinhoSoloImg.src;
+      screenArtWrap.classList.remove('hidden');
+    }
+
+    if (opts.titleScreen) screenEl.classList.add('title-bg');
+    else screenEl.classList.remove('title-bg');
+
+    if (opts.useIntroBg) screenEl.classList.add('intro-bg');
+    else screenEl.classList.remove('intro-bg');
+
+    screenEl.style.display = 'flex';
+    btnStart.onclick = () => {
+      clearTimeout(typewriterTimer);
+      screenEl.style.display = 'none';
+      callback();
+    };
+  }
+
+  function updateHUD() {
+    document.getElementById('hud-stars').textContent = game.starsCollected;
+    document.getElementById('hud-fragments').textContent = game.fragmentsCollected;
+    document.getElementById('hud-lives').textContent = game.lives;
+    document.getElementById('hud-level').textContent = game.level;
+  }
+
+  function drawBackground() {
+    const bg = bgImgs[game.level - 1] || bgImgs[0];
+    if (bg.complete && bg.naturalWidth > 0) {
+      const W = canvas.width, H = canvas.height;
+      const scale = H / bg.naturalHeight;
+      const scaledW = bg.naturalWidth * scale;
+      const parallaxX = -(game.cameraX * 0.3) % scaledW;
+      for (let x = parallaxX; x < W + scaledW; x += scaledW) {
+        ctx.drawImage(bg, x, 0, scaledW, H);
+      }
+    } else {
+      const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+      grad.addColorStop(0, '#87CEEB');
+      grad.addColorStop(1, '#e0f0ff');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+  }
+
+  function drawStar(cx, cy, r, color) {
+    ctx.save();
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    for (let i = 0; i < 5; i++) {
+      const angle = (i * 4 * Math.PI) / 5 - Math.PI / 2;
+      const x = cx + r * Math.cos(angle);
+      const y = cy + r * Math.sin(angle);
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function drawImageContainBottom(ctx, img, boxX, boxY, boxW, boxH) {
+    const imgRatio = img.naturalWidth / img.naturalHeight;
+    const boxRatio = boxW / boxH;
+    let drawW, drawH;
+
+    if (imgRatio > boxRatio) {
+      drawW = boxW;
+      drawH = drawW / imgRatio;
+    } else {
+      drawH = boxH;
+      drawW = drawH * imgRatio;
+    }
+
+    const dx = boxX + (boxW - drawW) / 2;
+    const dy = boxY + (boxH - drawH);
+    ctx.drawImage(img, dx, dy, drawW, drawH);
+  }
+
+  function drawEnemy(e) {
+    const ex = e.x - game.cameraX;
+    if (ex + e.w < -80 || ex > canvas.width + 80) return;
+
+    const img = enemyImgs[e.type];
+    const boxW = e.w * ENEMY_DRAW_SCALE;
+    const boxH = e.h * ENEMY_DRAW_SCALE;
+    const boxX = ex + (e.w - boxW) / 2;
+    const boxY = e.y + (e.h - boxH);
+
+    ctx.save();
+    if (img && img.complete && img.naturalWidth > 0) {
+      ctx.imageSmoothingEnabled = true;
+      drawImageContainBottom(ctx, img, boxX, boxY, boxW, boxH);
+    } else {
+      ctx.fillStyle = '#263d71';
+      ctx.fillRect(boxX, boxY, boxW, boxH);
+      ctx.fillStyle = '#ffd100';
+      ctx.font = 'bold 16px sans-serif';
+      ctx.fillText('!', boxX + boxW / 2 - 3, boxY + boxH / 2 + 4);
+    }
+    ctx.restore();
+  }
+
+  function drawGoal() {
+    const gx = goalX - game.cameraX;
+    if (gx < -60 || gx > canvas.width + 60) return;
+    const ground = groundY();
+
+    ctx.save();
+    ctx.strokeStyle = '#FFD700';
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.moveTo(gx, ground);
+    ctx.lineTo(gx, ground - 160);
+    ctx.stroke();
+
+    ctx.fillStyle = '#FFD700';
+    ctx.beginPath();
+    ctx.moveTo(gx, ground - 160);
+    ctx.lineTo(gx + 50, ground - 140);
+    ctx.lineTo(gx, ground - 120);
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.fillStyle = '#003087';
+    ctx.font = 'bold 11px sans-serif';
+    ctx.fillText('SESI', gx + 8, ground - 138);
+    ctx.restore();
+  }
+
+  function drawPlayer() {
+    const sw = Math.floor(spriteImg.naturalWidth / SPRITE_COLS);
+    const anim = ANIM[player.anim];
+    const sh = anim.rowH;
+    const px = player.x - game.cameraX;
+
+    const blinkOff = player.invincible > 0 && Math.floor(player.invincible / 6) % 2 === 0;
+    if (blinkOff) return;
+
+    ctx.save();
+
+    if (!sw || !sh) {
+      const drawW = player.w * PLAYER_DRAW_SCALE;
+      const drawH = player.h * PLAYER_DRAW_SCALE;
+      const drawX = px + (player.w - drawW) / 2;
+      const drawY = player.y + player.h - drawH;
+
+      ctx.fillStyle = '#003087';
+      ctx.fillRect(drawX, drawY, drawW, drawH);
+      ctx.fillStyle = '#FFD700';
+      ctx.font = 'bold 22px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('S', drawX + drawW / 2, drawY + drawH / 2);
+      ctx.restore();
+      return;
+    }
+
+    const sx = Math.floor(player.frame) * sw;
+    const sy = anim.rowY;
+
+    offscreen.width = sw;
+    offscreen.height = sh;
+    offCtx.clearRect(0, 0, sw, sh);
+    offCtx.imageSmoothingEnabled = false;
+    offCtx.drawImage(spriteImg, sx, sy, sw, sh, 0, 0, sw, sh);
+
+    const drawW = Math.round(player.w * PLAYER_DRAW_SCALE);
+    const drawH = Math.round(drawW * sh / sw);
+    const drawX = px + (player.w - drawW) / 2;
+    const drawY = player.y + player.h - drawH;
+
+    ctx.imageSmoothingEnabled = false;
+    if (player.facing < 0) {
+      ctx.translate(drawX + drawW, drawY);
+      ctx.scale(-1, 1);
+      ctx.drawImage(offscreen, 0, 0, sw, sh, 0, 0, drawW, drawH);
+    } else {
+      ctx.drawImage(offscreen, 0, 0, sw, sh, drawX, drawY, drawW, drawH);
+    }
+    ctx.restore();
+  }
+
+  function updateStoryPosition(side = 'right') {
+    if (storyPanel.classList.contains('hidden')) return;
+
+    const screenX = player.x - game.cameraX;
+    const screenY = player.y;
+    const bw = storyPanel.offsetWidth || 340;
+    const bh = storyPanel.offsetHeight || 120;
+    const pad = 10;
+
+    let bx;
+    let effectiveSide = side;
+
+    if (side === 'right') {
+      bx = screenX + player.w + 14;
+      if (bx + bw > canvas.width - pad) {
+        effectiveSide = 'left';
+        bx = screenX - bw - 14;
+      }
+    } else {
+      bx = screenX - bw - 14;
+      if (bx < pad) {
+        effectiveSide = 'right';
+        bx = screenX + player.w + 14;
+      }
+    }
+
+    bx = Math.max(pad, Math.min(canvas.width - bw - pad, bx));
+    let by = screenY - bh + 12;
+    by = Math.max(8, Math.min(canvas.height - bh - 8, by));
+
+    storyPanel.classList.remove('tail-left', 'tail-right');
+    storyPanel.classList.add(effectiveSide === 'right' ? 'tail-right' : 'tail-left');
+
+    storyPanel.style.left = `${bx}px`;
+    storyPanel.style.top = `${by}px`;
+  }
+
+  function showHint(fragmentObj) {
+    storyTitle.textContent = `FRAGMENTO ${fragmentObj.id + 1}`;
+    storyText.textContent = `“${fragmentObj.hint}”`;
+    storyPanel.classList.remove('hidden');
+
+    clearTimeout(storyTimeout);
+    storyTimeout = setTimeout(() => storyPanel.classList.add('hidden'), 7000);
+    updateStoryPosition('right');
+  }
+
+  function buildLevel(lvl) {
+    const ground = groundY();
+    game.levelWidth = 7000;
+    goalX = game.levelWidth - 120;
+
+    platforms = [{ x: 0, y: ground, w: game.levelWidth, h: GROUND_HEIGHT }];
+    const pfDefs = [
+      { x: 300, y: ground - 100, w: 160 }, { x: 550, y: ground - 180, w: 120 },
+      { x: 800, y: ground - 120, w: 200 }, { x: 1100, y: ground - 200, w: 140 },
+      { x: 1400, y: ground - 140, w: 180 }, { x: 1700, y: ground - 100, w: 160 },
+      { x: 2000, y: ground - 190, w: 130 }, { x: 2300, y: ground - 140, w: 200 },
+      { x: 2600, y: ground - 110, w: 150 }, { x: 2900, y: ground - 200, w: 140 },
+      { x: 3200, y: ground - 160, w: 160 }, { x: 3500, y: ground - 120, w: 180 },
+      { x: 3800, y: ground - 180, w: 130 }, { x: 4100, y: ground - 140, w: 160 },
+      { x: 4400, y: ground - 100, w: 200 }, { x: 4700, y: ground - 200, w: 140 },
+      { x: 5000, y: ground - 160, w: 160 }, { x: 5300, y: ground - 130, w: 180 },
+      { x: 5600, y: ground - 180, w: 140 }, { x: 5900, y: ground - 110, w: 200 },
+      { x: 6300, y: ground - 160, w: 180 }, { x: 6600, y: ground - 120, w: 160 },
+    ];
+    pfDefs.forEach(p => platforms.push({ ...p, h: 18 }));
+
+    // estrelas (80 por fase)
+    const candidates = [];
+    platforms.slice(1).forEach(p => {
+      for (let x = p.x + 20; x < p.x + p.w - 20; x += 36) candidates.push({ x, y: p.y - 24 });
+    });
+    for (let x = 180; x < game.levelWidth - 180; x += 80) candidates.push({ x, y: ground - 26 });
+    for (let i = candidates.length - 1; i > 0; i--) {
+      const j = (Math.random() * (i + 1)) | 0;
+      [candidates[i], candidates[j]] = [candidates[j], candidates[i]];
+    }
+    stars = candidates.slice(0, 80).map(s => ({ ...s, collected: false }));
+    game.phaseStars = 0;
+
+    // fragmentos (5 por fase)
+    fragments = PHASES[lvl].fragments.map((f, i) => ({
+      id: i,
+      x: f.x,
+      y: ground - 130 - (i % 2) * 50,
+      w: 34,
+      h: 40,
+      hint: f.hint,
+      marco: f.marco,
+      collected: false
+    }));
+    game.phaseFragments = 0;
+
+    // vida extra (1 por fase, para recuperar vidas perdidas)
+    lifePickup = {
+      x: Math.round(game.levelWidth / 2),
+      y: ground - 150,
+      w: 38,
+      h: 34,
+      collected: false
+    };
+
+    // inimigos
+    enemies = [];
+    const positions = [600, 1050, 1450, 1850, 2250, 2650, 3050, 3450, 3850, 4250, 4650, 5050, 5450, 5850, 6250, 6650];
+
+    if (lvl === 1) {
+      positions.forEach((ex, i) => enemies.push({
+        x: ex, y: ground - 46, w: 46, h: 46,
+        vx: (i % 2 ? 1 : -1) * (1 + (i % 3) * .25),
+        minX: ex - 120, maxX: ex + 120,
+        type: 'engrenildo', flying: false, phase: Math.random() * Math.PI * 2
+      }));
+    } else if (lvl === 2) {
+      positions.forEach((ex, i) => enemies.push({
+        x: ex, y: ground - 48, w: 42, h: 48,
+        vx: (i % 2 ? 1 : -1) * (1.15 + (i % 3) * .2),
+        minX: ex - 130, maxX: ex + 130,
+        type: 'papelito', flying: false, phase: Math.random() * Math.PI * 2
+      }));
+    } else {
+      positions.forEach((ex, i) => {
+        if (i % 2 === 0) {
+          enemies.push({
+            x: ex, y: ground - 48, w: 42, h: 48,
+            vx: (i % 2 ? 1 : -1) * (1.25 + (i % 3) * .22),
+            minX: ex - 135, maxX: ex + 135,
+            type: 'disquetildo', flying: false, phase: Math.random() * Math.PI * 2
+          });
+        } else {
+          const flyY = ground - 180 - (i % 3) * 32;
+          enemies.push({
+            x: ex, y: flyY, baseY: flyY, w: 54, h: 38,
+            vx: (i % 3 ? 1 : -1) * (1.3 + (i % 2) * .25),
+            minX: ex - 170, maxX: ex + 170,
+            type: 'bitdrone', flying: true, phase: Math.random() * Math.PI * 2
+          });
+        }
+      });
+    }
+
+    player.x = 80;
+    player.y = ground - player.h - 2;
+    player.vx = 0;
+    player.vy = 0;
+    player.onGround = true;
+    player.frame = 0;
+    player.frameTick = 0;
+    player.invincible = 0;
+
+    game.cameraX = 0;
+    hideStoryBubble();
+    fragmentToast.classList.add('hidden');
+  }
+
+  function resolvePlayerPlatforms() {
+    player.onGround = false;
+    for (let i = 0; i < platforms.length; i++) {
+      const p = platforms[i];
+      if (!rectIntersect(player, p)) continue;
+
+      if (i === 0) {
+        const overlapLeft  = (player.x + player.w) - p.x;
+        const overlapRight = (p.x + p.w) - player.x;
+        const overlapTop   = (player.y + player.h) - p.y;
+        const overlapBot   = (p.y + p.h) - player.y;
+        const minH = Math.min(overlapLeft, overlapRight);
+        const minV = Math.min(overlapTop, overlapBot);
+
+        if (minV < minH) {
+          if (overlapTop < overlapBot) {
+            player.y = p.y - player.h;
+            player.vy = 0;
+            player.onGround = true;
+          } else {
+            player.y = p.y + p.h;
+            player.vy = 0;
+          }
+        } else {
+          if (overlapLeft < overlapRight) {
+            player.x = p.x - player.w;
+            player.vx = 0;
+          } else {
+            player.x = p.x + p.w;
+            player.vx = 0;
+          }
+        }
+      } else {
+        if (player.vy >= 0 && player.y + player.h / 2 < p.y + p.h / 2) {
+          player.y = p.y - player.h;
+          player.vy = 0;
+          player.onGround = true;
+        }
+      }
+    }
+  }
+
+  function spawnStarParticle(x, y) {
+    for (let i = 0; i < 6; i++) {
+      particles.push({
+        x, y,
+        vx: (Math.random() - 0.5) * 4,
+        vy: -Math.random() * 3 - 1,
+        life: 40, maxLife: 40,
+        color: ['#FFD700', '#FFA500', '#fff'][(Math.random() * 3) | 0]
+      });
+    }
+  }
+
+  function updateAndDrawParticles() {
+    for (let i = particles.length - 1; i >= 0; i--) {
+      const p = particles[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += 0.1;
+      p.life--;
+      if (p.life <= 0) { particles.splice(i, 1); continue; }
+
+      ctx.save();
+      ctx.globalAlpha = p.life / p.maxLife;
+      drawStar(p.x - game.cameraX, p.y, 5, p.color);
+      ctx.restore();
+    }
+  }
+
+  function checkFragmentProximityAndCollect() {
+    let nearest = null;
+    let minDist = Infinity;
+
+    for (const f of fragments) {
+      if (f.collected) continue;
+      const d = Math.abs(player.x - f.x);
+      if (d < minDist) { minDist = d; nearest = f; }
+    }
+
+    if (nearest && minDist < 260) showHint(nearest);
+
+    for (const f of fragments) {
+      if (f.collected) continue;
+      if (rectIntersect(player, f)) {
+        f.collected = true;
+        game.fragmentsCollected++;
+        game.phaseFragments++;
+        game.foundMilestones[game.level].push(f.marco);
+
+        hideStoryBubble();
+        popFX("POW!", f.x, f.y - 12);
+        showFragmentToast(f.marco);
+        spawnStarParticle(f.x + f.w / 2, f.y + f.h / 2);
+
+        game.paused = true;
+        setTimeout(() => { game.paused = false; }, 800);
+        break;
+      }
+    }
+  }
+
+  function maybeShowEnemyIntro() {
+    if (game.enemyIntroShown.has(game.level)) return;
+    if (player.x <= 420) return;
+
+    game.enemyIntroShown.add(game.level);
+    game.running = false;
+
+    const artByLevel = {
+      1: enemyImgs.engrenildo.src,
+      2: enemyImgs.papelito.src,
+      3: enemyImgs.disquetildo.src
+    };
+
+    showScreen(
+      PHASES[game.level].enemyName,
+      `${PHASES[game.level].enemyIntro}\n\nSesinho: "${PHASES[game.level].sesinhoReaction}"`,
+      'CONTINUAR',
+      () => {
+        game.running = true;
+        requestFrame();
+      },
+      { artSrc: artByLevel[game.level], useIntroBg: false }
+    );
+  }
+
+  function buildPhaseResultText(level) {
+    const marcos = game.foundMilestones[level];
+    const lista = marcos.length ? marcos.map(m => `• ${m}`).join('\n') : '• Nenhum marco encontrado';
+
+    return `FASE ${level} : ${PHASES[level].phaseLabel}
+Estrelas coletadas: ${game.phaseStars}/80
+Fragmentos recuperados: ${game.phaseFragments}/5
+Você recuperou ${game.phaseFragments} de 5 fragmentos.
+
+MARCOS ENCONTRADOS:
+${lista}
+
+Sesinho: "${PHASES[level].closing}"`;
+  }
+
+  function levelComplete() {
+    if (game.phaseFragments < 5) {
+      showFragmentToast(`Faltam ${5 - game.phaseFragments} fragmento(s) para concluir a fase.`);
+      return;
+    }
+
+    game.running = false;
+    game.paused = true;
+
+    const desc = buildPhaseResultText(game.level);
+
+    if (game.level < 3) {
+      showScreen(`RESULTADO DA FASE ${game.level}`, desc, 'PRÓXIMA FASE →', () => {
+        game.level++;
+        buildLevel(game.level);
+        game.paused = false;
+        game.running = true;
+        updateHUD();
+        requestFrame();
+      }, { useIntroBg: false });
+    } else {
+      endGame(true);
+    }
+  }
+
+  function endGame(won) {
+    game.running = false;
+    game.paused = false;
+    cancelAnimationFrame(raf);
+    hideStoryBubble();
+    fragmentToast.classList.add('hidden');
+
+    if (won) {
+      showScreen(
+        '🏆 MISSÃO CONCLUÍDA',
+        `Os 15 registros históricos foram recuperados.
+A placa comemorativa foi totalmente revelada: "SESI 80 ANOS".
+
+Total de estrelas: ${game.starsCollected}/240
+Total de fragmentos: ${game.fragmentsCollected}/15
+
+Há 80 anos, milhares de pessoas ajudam a transformar vidas por meio da educação, saúde, bem-estar e segurança.
+Hoje, essa história continua sendo escrita por pessoas como você.`,
+        'JOGAR NOVAMENTE',
+        startGame,
+        { useIntroBg: false, artSrc: sesinhoSoloImg.src }
+      );
+    } else {
+      showScreen(
+        'GAME OVER',
+        `Total de estrelas: ${game.starsCollected}/240
+Total de fragmentos: ${game.fragmentsCollected}/15`,
+        'TENTAR NOVAMENTE',
+        startGame,
+        { useIntroBg: false, artSrc: sesinhoSoloImg.src }
+      );
+    }
+  }
+
+  function loseLife(fell = false) {
+    game.lives--;
+    updateHUD();
+    popFX(fell ? 'TCHIBUM!' : 'POF!', player.x + 8, player.y - 8);
+
+    if (game.lives <= 0) {
+      endGame(false);
+      return;
+    }
+
+    player.x = Math.max(80, game.cameraX + 80);
+    player.y = groundY() - player.h - 2;
+    player.vx = 0;
+    player.vy = 0;
+    player.onGround = false;
+    player.invincible = 90;
+
+    game.paused = false;
+    game.running = true;
+    requestFrame();
+  }
+
+  function drawScene() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawBackground();
+
+    // sem chão verde desenhado por cima
+
+    // plataformas
+    platforms.slice(1).forEach(p => {
+      const px = p.x - game.cameraX;
+      if (px + p.w < 0 || px > canvas.width) return;
+      ctx.fillStyle = '#c08000';
+      ctx.fillRect(px, p.y, p.w, p.h);
+      ctx.fillStyle = '#ffd060';
+      ctx.fillRect(px, p.y, p.w, 5);
+      ctx.fillStyle = '#8a5a00';
+      ctx.fillRect(px, p.y + p.h - 4, p.w, 4);
+    });
+
+    // estrelas
+    stars.forEach(s => {
+      if (s.collected) return;
+      const sx = s.x - game.cameraX;
+      if (sx < -30 || sx > canvas.width + 30) return;
+      const bounce = Math.sin(tick * 0.06 + s.x * 0.01) * 4;
+      drawStar(sx, s.y + bounce, 12, '#FFD700');
+      ctx.strokeStyle = '#FFA500';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      for (let i = 0; i < 5; i++) {
+        const a = (i * 4 * Math.PI) / 5 - Math.PI / 2;
+        const x = sx + 12 * Math.cos(a);
+        const y = s.y + bounce + 12 * Math.sin(a);
+        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+      ctx.stroke();
+    });
+
+    // fragmentos
+    fragments.forEach(f => {
+      if (f.collected) return;
+      const fx = f.x - game.cameraX;
+      if (fx < -50 || fx > canvas.width + 50) return;
+      const bob = Math.sin(tick * 0.08 + f.id * 2) * 4;
+
+      ctx.save();
+      ctx.fillStyle = '#fff';
+      ctx.strokeStyle = '#003087';
+      ctx.lineWidth = 2;
+      ctx.fillRect(fx, f.y + bob, f.w, f.h);
+      ctx.strokeRect(fx, f.y + bob, f.w, f.h);
+      ctx.fillStyle = '#FFD700';
+      ctx.font = 'bold 20px sans-serif';
+      ctx.fillText('🧩', fx + 6, f.y + bob + 27);
+      ctx.restore();
+    });
+
+    // vida extra (coração)
+    if (lifePickup && !lifePickup.collected) {
+      const lx = lifePickup.x - game.cameraX;
+      if (lx > -50 && lx < canvas.width + 50) {
+        const bob = Math.sin(tick * 0.07) * 5;
+        const pulse = 1 + Math.sin(tick * 0.12) * 0.08;
+        ctx.save();
+        ctx.translate(lx + lifePickup.w / 2, lifePickup.y + bob + lifePickup.h / 2);
+        ctx.scale(pulse, pulse);
+        ctx.font = '30px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.shadowColor = 'rgba(255,0,80,.55)';
+        ctx.shadowBlur = 14;
+        ctx.fillText('❤️', 0, 0);
+        ctx.restore();
+      }
+    }
+
+    enemies.forEach(drawEnemy);
+    drawGoal();
+    drawPlayer();
+    updateAndDrawParticles();
+    updateStoryPosition();
+  }
+
+  function gameLoop() {
+    if (!game.running) return;
+
+    if (game.paused) {
+      drawScene();
+      raf = requestAnimationFrame(gameLoop);
+      return;
+    }
+
+    tick++;
+
+    let moving = false;
+    if (keys['ArrowLeft'] || keys['KeyA']) {
+      player.vx = -MOVE_SPEED;
+      player.facing = -1;
+      moving = true;
+    } else if (keys['ArrowRight'] || keys['KeyD']) {
+      player.vx = MOVE_SPEED;
+      player.facing = 1;
+      moving = true;
+    } else {
+      player.vx *= 0.72;
+    }
+
+    if ((keys['ArrowUp'] || keys['Space'] || keys['KeyW']) && player.onGround) {
+      player.vy = JUMP_FORCE;
+      player.onGround = false;
+      popFX('BOING!', player.x + player.w / 2, player.y - 10);
+    }
+
+    player.vy += GRAVITY;
+    player.x += player.vx;
+    player.y += player.vy;
+
+    if (player.x < 0) player.x = 0;
+    if (player.x > game.levelWidth - player.w) player.x = game.levelWidth - player.w;
+
+    if (player.y > canvas.height + 120) {
+      loseLife(true);
+      return;
+    }
+
+    resolvePlayerPlatforms();
+
+    if (!player.onGround) player.anim = 'jump';
+    else if (Math.abs(player.vx) > 3) player.anim = 'run';
+    else if (moving) player.anim = 'walk';
+    else player.anim = 'idle';
+
+    const anim = ANIM[player.anim];
+    player.frameTick++;
+    if (player.frameTick >= anim.speed) {
+      player.frameTick = 0;
+      player.frame = (player.frame + 1) % anim.frames;
+    }
+
+    if (player.invincible > 0) player.invincible--;
+
+    const camTarget = player.x - canvas.width / 3;
+    game.cameraX += (camTarget - game.cameraX) * 0.12;
+    game.cameraX = Math.max(0, Math.min(game.levelWidth - canvas.width, game.cameraX));
+
+    maybeShowEnemyIntro();
+    if (!game.running) return;
+
+    let enemyHit = false;
+    for (let i = enemies.length - 1; i >= 0; i--) {
+      const e = enemies[i];
+      e.x += e.vx;
+
+      if (e.flying) {
+        e.phase += 0.04;
+        e.y = e.baseY + Math.sin(e.phase) * 42;
+      } else {
+        e.phase += 0.05;
+      }
+
+      if (e.x < e.minX || e.x + e.w > e.maxX) e.vx *= -1;
+
+      if (player.invincible === 0 && rectIntersect(player, e)) {
+        if (player.vy > 0 && player.y + player.h < e.y + e.h * 0.55) {
+          enemies.splice(i, 1);
+          popFX('POW!', e.x + e.w / 2, e.y - 10);
+          spawnStarParticle(e.x + e.w / 2, e.y + 8);
+          player.vy = -8;
+        } else {
+          enemyHit = true;
+        }
+      }
+    }
+
+    if (enemyHit) {
+      loseLife(false);
+      return;
+    }
+
+    for (const s of stars) {
+      if (s.collected) continue;
+      if (Math.abs(player.x - s.x) < player.w * 0.8 && Math.abs(player.y - s.y) < player.h) {
+        s.collected = true;
+        game.starsCollected++;
+        game.phaseStars++;
+        popFX('ZUP!', s.x, s.y - 8);
+        spawnStarParticle(s.x, s.y);
+      }
+    }
+
+    if (lifePickup && !lifePickup.collected && rectIntersect(player, lifePickup)) {
+      lifePickup.collected = true;
+      if (game.lives < 3) {
+        game.lives++;
+        popFX('BOING!', lifePickup.x + lifePickup.w / 2, lifePickup.y - 8);
+        showFragmentToast('+1 vida! Continue firme na missão!');
+      } else {
+        showFragmentToast('Vidas já estão no máximo!');
+      }
+      spawnStarParticle(lifePickup.x + lifePickup.w / 2, lifePickup.y + lifePickup.h / 2);
+      updateHUD();
+    }
+
+    checkFragmentProximityAndCollect();
+
+    if (player.x + player.w > goalX && player.x < goalX + 60) {
+      levelComplete();
+      return;
+    }
+
+    updateHUD();
+    drawScene();
+    raf = requestAnimationFrame(gameLoop);
+  }
+
+  function startGame() {
+    cancelAnimationFrame(raf);
+    game.running = true;
+    game.paused = false;
+    game.level = 1;
+    game.lives = 3;
+    game.cameraX = 0;
+    game.starsCollected = 0;
+    game.fragmentsCollected = 0;
+    game.phaseStars = 0;
+    game.phaseFragments = 0;
+    game.foundMilestones = {1: [], 2: [], 3: []};
+    game.enemyIntroShown.clear();
+
+    particles.length = 0;
+    hideStoryBubble();
+    fragmentToast.classList.add('hidden');
+
+    buildLevel(1);
+    updateHUD();
+    requestFrame();
+  }
+
+  // Wiring
+  document.getElementById('btn-close').onclick = () => {
+    game.running = false;
+    cancelAnimationFrame(raf);
+    document.getElementById('modal-overlay').style.display = 'none';
+  };
+
+  // Tela 1: tela inicial (somente imagem de fundo + botão JOGAR AGORA)
+  function showTitleScreen() {
+    showScreen('', '', '▶ JOGAR AGORA', showIntroScreen, { titleScreen: true });
+  }
+
+  // Tela 2: introdução (texto + imagem do Sesinho) antes do jogo começar
+  function showIntroScreen() {
+    showScreen(
+      'SESINHO EM:\n FRAGMENTOS DA HISTÓRIA',
+      INTRO_TEXT,
+      '▶ COMEÇAR',
+      startGame,
+      { useIntroBg: true, artSrc: sesinhoSoloImg.src }
+    );
+  }
+
+  showTitleScreen();
+
+  [
+    ...bgImgs,
+    introBgImg,
+    titleBgImg,
+    spriteImg,
+    sesinhoSoloImg,
+    ...Object.values(enemyImgs),
+    ...Object.values(fxImgs)
+  ].forEach(img => {
+    img.onload = () => {};
+    img.onerror = () => {};
+  });
+</script>
+</body>
+</html>

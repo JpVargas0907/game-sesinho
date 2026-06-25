@@ -1,32 +1,31 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SESI 80 ANOS — FRAGMENTOS DA HISTÓRIA</title>
+<!-- ===== SESI 80 ANOS — Plugin do jogo (fragmento embutível) =====
+     Cole este bloco dentro de qualquer página existente. Ele não usa
+     <html>/<head>/<body> e mantém o CSS escopado em #modal-overlay. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+    :where(#modal-overlay, #modal-overlay *, #modal-overlay *::before, #modal-overlay *::after) {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
 
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    @font-face{
+      font-family:'KG HAPPY Solid';
+      src:url('fontes/KGHAPPYSolid.ttf') format('truetype');
+      font-weight:400; font-style:normal; font-display:swap;
+    }
+    @font-face{
+      font-family:'KG HAPPY';
+      src:url('fontes/KGHAPPY.ttf') format('truetype');
+      font-weight:400; font-style:normal; font-display:swap;
+    }
 
-    :root{
+    #modal-overlay{
       --sesi-blue:#003087;
       --sesi-blue-2:#0047b8;
       --sesi-yellow:#ffd100;
       --ink:#001a4d;
-    }
-
-    body{
-      min-height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      overflow:hidden;
-      background:#091327;
-      font-family:"Nunito",system-ui,-apple-system,sans-serif;
     }
 
     #modal-overlay{
@@ -34,6 +33,7 @@
       background:rgba(0,0,0,.84);
       display:flex; align-items:center; justify-content:center;
       z-index:1000;
+      font-family:"Nunito",system-ui,-apple-system,sans-serif;
     }
 
     #modal{
@@ -160,7 +160,7 @@
         #fff;
       border:4px solid var(--ink);
       border-radius:18px;
-      box-shadow:6px 6px 0 var(--sesi-yellow), 0 8px 18px rgba(0,0,0,.25);
+      box-shadow:6px 6px 0 #000, 0 8px 18px rgba(0,0,0,.25);
       padding:12px 14px;
       line-height:1.45;
       font-size:.8rem;
@@ -287,6 +287,7 @@
       background:rgba(5,12,30,.9);
       display:flex; flex-direction:column;
       justify-content:center;
+      align-items:center;
       gap:16px;
       padding:24px;
     }
@@ -297,15 +298,11 @@
     }
     #screen.title-bg{
       background:
-        url('imagens/tela-inicial.png') center/cover no-repeat;
+        url('imagens/cenarios/tela-inicial.png') center/cover no-repeat;
       justify-content:flex-end;
       padding-bottom:54px;
     }
-    #screen.title-bg #screen-content{ display:none; }
-    #screen.title-bg #btn-start{
-      font-size:1.25rem;
-      padding:16px 48px;
-    }
+    #screen.title-bg #screen-box{ display:none; }
 
     #screen-content{
       width:min(980px, 94%);
@@ -387,21 +384,6 @@
       filter:drop-shadow(0 10px 20px rgba(0,0,0,.45));
     }
 
-    #btn-start{
-      margin:0 auto;
-      background:linear-gradient(135deg,var(--sesi-yellow),#ff9800);
-      color:#002d7d;
-      border:none;
-      border-radius:999px;
-      font-weight:900;
-      letter-spacing:.5px;
-      font-size:1rem;
-      padding:12px 30px;
-      cursor:pointer;
-      box-shadow:0 4px 20px rgba(255,200,0,.35);
-      transition:.15s;
-    }
-    #btn-start:hover{ transform:scale(1.04); }
 
     @media (max-width: 900px){
       .logo-text{ font-size:.95rem; }
@@ -415,9 +397,331 @@
       #screen-copy h1, #screen-copy p{ text-align:center; margin-left:auto; margin-right:auto; }
       #controls-hint{ font-size:.66rem; }
     }
+
+    /* ===== Telas / Modais — atualização ===== */
+    #screen-box.hidden{ display:none; }
+
+    .info-box{
+      width:min(680px, 90%);
+      margin:0 auto;
+      padding:34px 30px;
+      border:4.06px solid #000;
+      background:#FFCE1F;
+      box-shadow:4.99px 5.32px 0 0 #000;
+      -webkit-backdrop-filter:blur(66.38px);
+      backdrop-filter:blur(66.38px);
+      display:flex; flex-direction:column; align-items:center; gap:18px;
+      text-align:center;
+    }
+    .info-box-title{
+      color:#FFA617;
+      text-shadow:2.067px 2.756px 0 #000;
+      -webkit-text-stroke-width:0.72px;
+      -webkit-text-stroke-color:#000;
+      font-family:'KG HAPPY Solid','Bangers',cursive;
+      font-size:33.257px;
+      font-style:normal;
+      font-weight:400;
+      line-height:48.165px;
+      letter-spacing:-2.75px;
+      text-transform:uppercase;
+      text-align:center;
+    }
+    .info-box-text{
+      color:#000;
+      text-align:center;
+      font-family:Arial, Helvetica, sans-serif;
+      font-size:20px;
+      font-weight:700;
+      line-height:30px;
+    }
+
+    /* Cursor do efeito máquina de escrever */
+    .tw-cursor{
+      display:inline-block;
+      color:inherit;
+      font-weight:900;
+      margin-left:1px;
+      animation:twBlink 1s steps(1) infinite;
+    }
+
+    /* Intro de fase — caixa encaixada no quadrinho do fundo (topo/esquerda) */
+    #screen.phase-intro{
+      justify-content:flex-start;
+      align-items:flex-start;
+      padding:3.5% 0 0 20.5%;
+    }
+    #screen.phase-intro #screen-box{
+      width:min(440px, 60%);
+      margin:0;
+      align-items:flex-start;
+      text-align:left;
+      padding:22px 26px;
+      gap:12px;
+    }
+    #screen.phase-intro .info-box-title{
+      text-align:left;
+      line-height:38px;
+    }
+    #screen.phase-intro .info-box-text{
+      text-align:left;
+      font-size:17px;
+      line-height:25px;
+    }
+    #screen.phase-intro .action-btn{
+      margin:18px 0 0;
+    }
+    @media (max-width: 760px){
+      #screen.phase-intro{ padding:24px; align-items:center; justify-content:center; }
+      #screen.phase-intro #screen-box{ width:min(440px, 92%); }
+    }
+
+    .action-btn{
+      margin:26px auto 0;
+      border-radius:503.546px;
+      border:6px solid #FFF;
+      background:linear-gradient(270deg,#F98B00 0%,#FCBF00 100%);
+      box-shadow:0 0 44px 0 rgba(250,203,37,.40);
+      cursor:pointer;
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:14px;
+      padding:16px 38px;
+      transition:.15s;
+    }
+    .action-btn:hover{ transform:scale(1.05); }
+    .action-btn:active{ transform:scale(.99); }
+    .action-btn-label{
+      color:#01216C;
+      text-align:center;
+      font-family:Arial, Helvetica, sans-serif;
+      font-size:24px;
+      font-weight:900;
+      line-height:36px;
+      text-transform:uppercase;
+    }
+    .action-btn-icon{ height:34px; width:auto; display:block; }
+    .action-btn-icon.hidden, .action-btn-label.hidden{ display:none; }
+
+    /* Tutorial (como jogar) */
+    #tutorial-overlay{
+      position:absolute; inset:0; z-index:40;
+      background:rgba(0,0,0,.82);
+      display:flex; flex-direction:column;
+      align-items:center; justify-content:center;
+      gap:26px; padding:24px; text-align:center;
+    }
+    #tutorial-overlay.hidden{ display:none; }
+    .tutorial-text{
+      color:#fff; font-family:Arial, Helvetica, sans-serif;
+      font-size:22px; font-weight:700; line-height:32px;
+      max-width:620px;
+    }
+    .tutorial-text strong{ color:#FFCE1F; }
+    #controls-hint.highlight{
+      z-index:50;
+      background:rgba(0,0,0,.9);
+      border-color:#FFCE1F;
+      transform:scale(1.2);
+      transform-origin:top right;
+      animation:hintPulse 1.1s ease-in-out infinite;
+    }
+    @keyframes hintPulse{
+      0%,100%{ box-shadow:0 0 0 4px rgba(255,206,31,.45), 0 0 24px 6px rgba(255,206,31,.5); }
+      50%{ box-shadow:0 0 0 6px rgba(255,206,31,.8), 0 0 42px 12px rgba(255,206,31,.85); }
+    }
+
+    /* Resultado da fase */
+    #result-overlay{
+      position:absolute; inset:0; z-index:35;
+      background:
+        linear-gradient(rgba(4,10,24,.72), rgba(4,10,24,.86)),
+        url('imagens/cenarios/cenario-fase2quadrinhos.png') center/cover no-repeat;
+      display:flex; flex-direction:column;
+      align-items:center; justify-content:center;
+      gap:26px; padding:24px;
+    }
+    #result-overlay.hidden{ display:none; }
+    .result-speech{
+      position:absolute;
+      left:18px; bottom:18px;
+      width:min(280px, 30vw);
+      height:auto; object-fit:contain;
+      z-index:2; pointer-events:none;
+      filter:drop-shadow(0 8px 16px rgba(0,0,0,.45));
+    }
+    .result-speech.hidden{ display:none; }
+    .result-title{
+      color:#FFA617;
+      text-shadow:3px 3px 0 #000;
+    }
+    .result-boxes{
+      display:flex; gap:24px; flex-wrap:wrap; justify-content:center;
+      width:100%;
+    }
+    .result-box{
+      width:min(320px, 42vw);
+      min-width:240px;
+      min-height:236px;
+      border-radius:12.941px;
+      border:4px solid #EF6100;
+      background:linear-gradient(0deg, rgba(239,97,0,.70) 0%, rgba(45,42,40,.70) 100%);
+      box-shadow:0 0 156.94px 0 rgba(250,203,37,.10);
+      -webkit-backdrop-filter:blur(22px);
+      backdrop-filter:blur(22px);
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      gap:12px; padding:22px 18px;
+    }
+    .result-box-title{
+      color:#fff; font-family:'KG HAPPY Solid','Bangers',cursive;
+      font-size:20px; font-weight:400; text-transform:uppercase;
+      letter-spacing:.4px; text-align:center;
+    }
+    .result-box-img{ width:64px; height:64px; object-fit:contain; }
+    .result-box-count{
+      color:#fff; font-family:'KG HAPPY Solid','Bangers',cursive;
+      font-size:30px; font-weight:400;
+      display:inline-block;
+      transform-origin:center;
+      will-change:transform;
+    }
+    .result-frag-imgs{
+      display:flex; flex-wrap:wrap; gap:8px; justify-content:center; align-items:center;
+    }
+    .result-frag-imgs img{ width:46px; height:46px; object-fit:contain; }
+
+    /* Modais (fragmento / inimigo) */
+    #game-modal{
+      position:absolute; inset:0; z-index:45;
+      background:rgba(0,0,0,.7);
+      display:flex; align-items:center; justify-content:center;
+      padding:30px;
+    }
+    #game-modal.hidden{ display:none; }
+    #game-modal-box{
+      position:relative;
+      width:min(620px, 92%);
+      max-height:88%;
+      margin-top:24px;
+      overflow:visible;
+      padding:36px 38px;
+      border:4.219px solid #000;
+      box-shadow:5.186px 5.529px 0 0 #000;
+      -webkit-backdrop-filter:blur(68.99px);
+      backdrop-filter:blur(68.99px);
+      display:flex; flex-direction:column; align-items:center; gap:18px;
+      text-align:center;
+    }
+    #game-modal.modal-fragment #game-modal-box{ background:#FFCE1F; }
+    #game-modal.modal-enemy #game-modal-box{ background:#252525; }
+    #game-modal.modal-enemy .modal-text{ color:#fff; }
+    .modal-text{ font-size:20px; line-height:30px; }
+    .modal-imgs{
+      display:flex; flex-wrap:wrap; gap:22px;
+      justify-content:center; align-items:flex-end;
+    }
+    .modal-imgs:empty{ display:none; }
+    .modal-imgs img{
+      max-width:min(240px, 60%);
+      max-height:230px;
+      height:auto; object-fit:contain;
+    }
+    #game-modal.modal-fragment .modal-imgs img{
+      width:130px; height:130px;
+      max-width:none; max-height:none;
+      object-fit:contain;
+    }
+    #game-modal.modal-enemy .modal-imgs{
+      flex-wrap:nowrap;
+      gap:14px;
+      width:100%;
+    }
+    #game-modal.modal-enemy .modal-imgs img{
+      flex:1 1 0;
+      min-width:0;
+      max-width:50%;
+      max-height:min(300px, 38vh);
+      object-fit:contain;
+    }
+    .modal-close{
+      position:absolute; top:-22px; right:-22px;
+      width:54px; height:54px;
+      border-radius:503.546px;
+      border:6px solid #FFF;
+      background:linear-gradient(270deg,#F98B00 0%,#FCBF00 100%);
+      box-shadow:0 0 44px 0 rgba(250,203,37,.40);
+      cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+      transition:.15s;
+    }
+    .modal-close:hover{ transform:scale(1.07); }
+    .modal-close img{ width:22px; height:22px; object-fit:contain; }
+
+    /* Fragmentos na caixa da intro */
+    .screen-box-frags{
+      display:flex; flex-wrap:wrap; gap:10px;
+      justify-content:center; align-items:center;
+      width:100%;
+    }
+    .screen-box-frags.hidden{ display:none; }
+    .screen-box-frags img{
+      width:56px; height:56px;
+      object-fit:contain;
+    }
+
+    /* Tela de missão cumprida */
+    #win-overlay{
+      position:absolute; inset:0; z-index:38;
+      background:
+        linear-gradient(rgba(4,10,24,.62), rgba(4,10,24,.78)),
+        url('imagens/cenarios/cenario-fase2quadrinhos.png') center/cover no-repeat;
+      display:flex; flex-direction:column;
+      align-items:center; justify-content:center;
+      gap:26px; padding:30px; text-align:center;
+    }
+    #win-overlay.hidden{ display:none; }
+    #win-success, #win-fail{
+      display:flex; flex-direction:column;
+      align-items:center; justify-content:center;
+      gap:26px; width:100%;
+    }
+    #win-success.hidden, #win-fail.hidden{ display:none; }
+    .win-main-title{ font-size:48px; line-height:1.05; }
+    .win-fail-title{ color:#FF2E2E; }
+    .win-fail-frags{
+      display:flex; flex-wrap:wrap; gap:12px;
+      justify-content:center; align-items:center;
+      width:min(820px, 94%);
+    }
+    .win-fail-frags img{ width:84px; height:84px; object-fit:contain; }
+    .win-fail-desc{ max-width:760px; text-align:center; }
+    .win-content{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      align-items:center; justify-items:center;
+      gap:32px;
+      width:min(1000px, 96%);
+    }
+    .win-placa{
+      width:100%;
+      max-width:460px;
+      max-height:430px;
+      object-fit:contain;
+      filter:drop-shadow(0 10px 22px rgba(0,0,0,.5));
+    }
+    .win-text-col{
+      display:flex; flex-direction:column; gap:12px;
+      text-align:left;
+    }
+    .win-sub-title{ font-size:30px; line-height:1.1; text-align:left; }
+    .win-desc{
+      color:#fff;
+      font-family:Arial, Helvetica, sans-serif;
+      font-size:24px;
+      line-height:1.5;
+    }
+    .win-text-col .win-desc{ font-size:18px; line-height:1.45; }
   </style>
-</head>
-<body>
+
 <div id="modal-overlay">
   <div id="modal">
     <div id="modal-header">
@@ -447,24 +751,82 @@
       <div id="fx-layer"></div>
 
       <div id="fragment-toast" class="hidden">
-        <strong>FRAGMENTO RECUPERADO!</strong>
+        <strong id="fragment-toast-title">AVISO</strong>
         <span id="fragment-marco"></span>
       </div>
 
       <div id="screen" class="intro-bg">
-        <div id="screen-content">
-          <div id="screen-copy">
-            <h1 id="screen-title">SESINHO<br>FRAGMENTOS DA HISTÓRIA</h1>
-            <p id="screen-desc"></p>
-            <div class="score-display" id="screen-score" style="display:none">
-              PONTUAÇÃO: <span id="final-score">0</span>
-            </div>
+        <div id="screen-box" class="info-box">
+          <h1 id="screen-box-title" class="info-box-title"></h1>
+          <div id="screen-box-frags" class="screen-box-frags hidden"></div>
+          <p id="screen-box-text" class="info-box-text"></p>
+        </div>
+        <button id="btn-start" class="action-btn">
+          <img id="btn-start-icon" class="action-btn-icon hidden" src="" alt="" />
+          <span id="btn-start-label" class="action-btn-label"></span>
+        </button>
+      </div>
+
+      <div id="tutorial-overlay" class="hidden">
+        <p class="tutorial-text">
+          Use os comandos destacados para <strong>mover</strong> e <strong>pular</strong>.
+          Recupere os fragmentos da história espalhados pela fase!
+        </p>
+        <button id="btn-tutorial" class="action-btn">
+          <span class="action-btn-label">ENTENDI</span>
+        </button>
+      </div>
+
+      <div id="result-overlay" class="hidden">
+        <img id="result-speech" class="result-speech hidden" src="" alt="Fala do Sesinho" />
+        <h1 id="result-title" class="info-box-title result-title"></h1>
+        <div class="result-boxes">
+          <div class="result-box">
+            <div class="result-box-title">ESTRELAS COLETADAS</div>
+            <img class="result-box-img" src="imagens/icones/estrela.png" alt="Estrela" />
+            <div class="result-box-count" id="result-stars"></div>
           </div>
-          <div id="screen-art-wrap">
-            <img id="screen-art" src="imagens/personagens/sesinho-solo.png" alt="Sesinho" />
+          <div class="result-box">
+            <div class="result-box-title">FRAGMENTOS COLETADOS</div>
+            <div class="result-frag-imgs" id="result-frag-imgs"></div>
+            <div class="result-box-count" id="result-fragments"></div>
           </div>
         </div>
-        <button id="btn-start">▶ JOGAR AGORA</button>
+        <button id="btn-result" class="action-btn">
+          <span class="action-btn-label" id="btn-result-label">Próxima fase →</span>
+        </button>
+      </div>
+
+      <div id="game-modal" class="hidden modal-fragment">
+        <div id="game-modal-box">
+          <button id="game-modal-close" class="modal-close" title="Fechar">
+            <img src="imagens/icones/icone-close.png" alt="Fechar" />
+          </button>
+          <div id="game-modal-imgs" class="modal-imgs"></div>
+          <h2 id="game-modal-title" class="info-box-title modal-title"></h2>
+          <p id="game-modal-text" class="info-box-text modal-text"></p>
+        </div>
+      </div>
+
+      <div id="win-overlay" class="hidden">
+        <div id="win-success">
+          <h1 class="info-box-title win-main-title">MISSÃO CUMPRIDA</h1>
+          <div class="win-content">
+            <img class="win-placa" src="imagens/fragmentos/placa-comemorativa.png" alt="Placa comemorativa dos 80 anos do SESI" />
+            <div class="win-text-col">
+              <h2 class="info-box-title win-sub-title">FELIZ ANIVERSÁRIO, SESI!</h2>
+              <p class="win-desc">O SESI agradece a cada integrante do Sistema Indústria pela dedicação ao longo desses anos. Juntos, transformamos a realidade por meio da educação e da qualidade de vida. Assim, fortalecemos o trabalhador brasileiro e construímos um legado de excelência!</p>
+            </div>
+          </div>
+        </div>
+        <div id="win-fail" class="hidden">
+          <h1 class="info-box-title win-main-title win-fail-title">IH, DEU RUIM!</h1>
+          <div class="win-fail-frags" id="win-fail-frags"></div>
+          <p class="win-desc win-fail-desc">O SESI agradece a cada integrante do Sistema Indústria pela dedicação ao longo desses anos. Juntos, transformamos a realidade por meio da educação e da qualidade de vida. Assim, fortalecemos o trabalhador brasileiro e construímos um legado de excelência!</p>
+        </div>
+        <button id="btn-win" class="action-btn">
+          <span class="action-btn-label">JOGAR NOVAMENTE</span>
+        </button>
       </div>
     </div>
   </div>
@@ -481,15 +843,47 @@
   const storyText = document.getElementById('story-text');
 
   const fragmentToast = document.getElementById('fragment-toast');
+  const fragmentToastTitle = document.getElementById('fragment-toast-title');
   const fragmentMarco = document.getElementById('fragment-marco');
   const fxLayer = document.getElementById('fx-layer');
 
   const screenEl = document.getElementById('screen');
-  const screenTitle = document.getElementById('screen-title');
-  const screenDesc = document.getElementById('screen-desc');
-  const screenArtWrap = document.getElementById('screen-art-wrap');
-  const screenArt = document.getElementById('screen-art');
+  const screenBox = document.getElementById('screen-box');
+  const screenBoxTitle = document.getElementById('screen-box-title');
+  const screenBoxText = document.getElementById('screen-box-text');
   const btnStart = document.getElementById('btn-start');
+  const btnStartIcon = document.getElementById('btn-start-icon');
+  const btnStartLabel = document.getElementById('btn-start-label');
+
+  const tutorialOverlay = document.getElementById('tutorial-overlay');
+  const btnTutorial = document.getElementById('btn-tutorial');
+  const controlsHint = document.getElementById('controls-hint');
+
+  const resultOverlay = document.getElementById('result-overlay');
+  const resultTitle = document.getElementById('result-title');
+  const resultStars = document.getElementById('result-stars');
+  const resultFragments = document.getElementById('result-fragments');
+  const resultFragImgs = document.getElementById('result-frag-imgs');
+  const resultSpeech = document.getElementById('result-speech');
+  const btnResult = document.getElementById('btn-result');
+  const btnResultLabel = document.getElementById('btn-result-label');
+
+  const gameModal = document.getElementById('game-modal');
+  const gameModalClose = document.getElementById('game-modal-close');
+  const gameModalImgs = document.getElementById('game-modal-imgs');
+  const gameModalTitle = document.getElementById('game-modal-title');
+  const gameModalText = document.getElementById('game-modal-text');
+
+  const screenBoxFrags = document.getElementById('screen-box-frags');
+  const winOverlay = document.getElementById('win-overlay');
+  const winSuccess = document.getElementById('win-success');
+  const winFail = document.getElementById('win-fail');
+  const winFailFrags = document.getElementById('win-fail-frags');
+  const btnWin = document.getElementById('btn-win');
+
+  const btnMusic = document.getElementById('btn-music');
+
+  const ICON_CONTINUE = 'imagens/icones/icone-continuar.png';
 
   function resizeCanvas() {
     canvas.width = wrap.clientWidth;
@@ -497,6 +891,70 @@
   }
   resizeCanvas();
   window.addEventListener('resize', resizeCanvas);
+
+  // ===== Música de fundo =====
+  const bgMusic = new Audio('sons/sesinho_game_sound.mp3');
+  bgMusic.loop = true;
+  bgMusic.preload = 'auto';
+
+  const MUSIC_VOLUME_SCREEN = 0.07;
+  const MUSIC_VOLUME_GAME = 0.22;
+  let musicEnabled = true;
+  let musicMode = 'screen'; // 'screen' | 'game'
+
+  function currentMusicVolume() {
+    return musicMode === 'game' ? MUSIC_VOLUME_GAME : MUSIC_VOLUME_SCREEN;
+  }
+
+  function playMusic() {
+    if (!musicEnabled) return;
+    bgMusic.volume = currentMusicVolume();
+    const p = bgMusic.play();
+    if (p && typeof p.catch === 'function') p.catch(() => {});
+  }
+
+  function pauseMusic() {
+    bgMusic.pause();
+  }
+
+  function setMusicMode(mode) {
+    musicMode = mode === 'game' ? 'game' : 'screen';
+    if (!musicEnabled) return;
+    bgMusic.volume = currentMusicVolume();
+    playMusic();
+  }
+
+  function updateMusicButton() {
+    if (!btnMusic) return;
+    btnMusic.setAttribute('aria-pressed', musicEnabled ? 'true' : 'false');
+    btnMusic.classList.toggle('is-off', !musicEnabled);
+    btnMusic.textContent = musicEnabled ? '🔊 MÚSICA ON' : '🔇 MÚSICA OFF';
+    btnMusic.title = musicEnabled ? 'Desativar música' : 'Ativar música';
+  }
+
+  function toggleMusic() {
+    musicEnabled = !musicEnabled;
+    if (musicEnabled) playMusic();
+    else pauseMusic();
+    updateMusicButton();
+  }
+
+  function unlockAudio() {
+    SFX.resume();
+    if (musicEnabled) playMusic();
+    window.removeEventListener('pointerdown', unlockAudio);
+    window.removeEventListener('keydown', unlockAudio);
+  }
+  window.addEventListener('pointerdown', unlockAudio, { once: true });
+  window.addEventListener('keydown', unlockAudio, { once: true });
+
+  if (btnMusic) {
+    btnMusic.addEventListener('click', () => {
+      SFX.resume();
+      toggleMusic();
+    });
+  }
+  updateMusicButton();
 
   // ===== Assets =====
   const bgImgs = [1,2,3].map(n => {
@@ -528,6 +986,13 @@
   enemyImgs.disquetildo.src = 'imagens/personagens/disquetildo.png';
   enemyImgs.bitdrone.src = 'imagens/personagens/bitdrone-voador.png';
 
+  const fragmentImgs = {};
+  for (let i = 1; i <= 15; i++) {
+    const img = new Image();
+    img.src = `imagens/fragmentos/fragmento-${i}.png`;
+    fragmentImgs[i] = img;
+  }
+
   const fxImgs = {
     BOING: new Image(),
     POF: new Image(),
@@ -542,111 +1007,69 @@
   fxImgs.ZUP.src = 'imagens/onomatopeias/zup.png';
 
   // ===== Conteúdo =====
-  const INTRO_TEXT = `Ao longo de 80 anos, o SESI acumulou uma história de transformação.
-Alguns fragmentos dessa trajetória foram espalhados pelas páginas do tempo.
-Ajude o Sesinho a recuperá-los e revele a placa comemorativa dos 80 anos do SESI.`;
+  const INTRO_TEXT = `Em 80 anos, o SESI acumulou uma história de transformações. Os fragmentos dessa trajetória ficaram espalhados pelas páginas do tempo. Ajude o Sesinho a recuperar esses fragmentos. \n\nSão 5 fragmentos para cada uma das três fases, até completar a placa comemorativa do SESI 80 anos. Vamos nessa?`;
 
   const PHASES = {
     1: {
-      phaseLabel: "A ORIGEM",
-      enemyName: "ENGRENILDO",
-      enemyIntro: "Engrenildo está à solta! Não deixe essa engrenagem travessa atrapalhar sua missão.",
-      sesinhoReaction: "Uma engrenagem andando sozinha? Isso não parece nada normal!",
+      phaseLabel: "ORIGEM",
+      phaseIntro: "O nascimento de um pacto social histórico pela produtividade e pelo bem-estar do trabalhador. \nDa assistência básica à interiorização, o SESI amplia sua cobertura no Brasil. Fique atento para resgatar 5 fragmentos!",
+      enemyIntros: [
+        {
+          name: "DONA ENGRENA",
+          img: "imagens/personagens/engrenilda-intro.png",
+          text: "Uma engrenagem andando sozinha? Tem algo estranho! Pule sobre a Dona Engrena e não deixe ela atrapalhar sua missão."
+        }
+      ],
       closing: "Estamos descobrindo como tudo começou!",
       fragments: [
-        {
-          x: 850,
-          hint: "Você sabe quando começou essa grande história?",
-          marco: "1946 - Criação do SESI por empresários brasileiros."
-        },
-        {
-          x: 1900,
-          hint: "O que será que ajudava os trabalhadores lá no começo?",
-          marco: "1950 - Criação das Cozinhas Distritais."
-        },
-        {
-          x: 3000,
-          hint: "Será que encontramos algo relacionado à alimentação?",
-          marco: "1954 - Expansão dos postos médicos."
-        },
-        {
-          x: 4300,
-          hint: "Onde os trabalhadores buscavam cuidados com a saúde?",
-          marco: "Saúde, alimentação e moradia para trabalhadores."
-        },
-        {
-          x: 5600,
-          hint: "Quais eram as principais necessidades das famílias naquela época?",
-          marco: "Nasce uma instituição dedicada ao bem-estar da indústria."
-        }
+        { x: 850,  marco: "Em 1946, o SESI é criado para melhorar o bem-estar social do trabalhador e de sua família." },
+        { x: 1900, marco: "Em 1947, foi criado o Sesinho e seu gibi, destinado ao público infantil." },
+        { x: 3000, marco: "Em 1950, o SESI-SP realizou o primeiro Inquérito de Higiene e Segurança Industrial para avaliar as condições de trabalho nas indústrias. Em 1959, o SESI-PR inaugurou a primeira Unidade Móvel de Saúde, para expandir os atendimentos para o interior." },
+        { x: 4300, marco: "Antes mesmo da inauguração de Brasília, o SESI instalou um Centro Social na Vila Operária da Novacap, em 1958, para oferecer assistência médica, escola de alfabetização, cursos de capacitação e atividades recreativas." },
+        { x: 5600, marco: "Em 1981, o Conselho Nacional do SESI foi transferido do Rio de Janeiro para Brasília. A mudança do Departamento Nacional foi feita em 1997." }
       ]
     },
     2: {
-      phaseLabel: "TRANSFORMANDO VIDAS",
-      enemyName: "PAPELITO",
-      enemyIntro: "Papelito está causando confusão! Desvie das suas trapalhadas e continue a busca.",
-      sesinhoReaction: "Ei! Esse papel está bagunçando os registros históricos!",
+      phaseLabel: "MODERNIZAÇÃO",
+      phaseIntro: "A reinvenção do SESI diante dos desafios depois da redemocratização, em 1985. \nÉ a era das grandes parcerias que ampliam cidadania, educação e qualidade de vida. Colete mais 5 fragmentos!",
+      enemyIntros: [
+        {
+          name: "SEU PAPELÔNIO",
+          img: "imagens/personagens/papelito-intro.png",
+          text: "Que papel é esse bagunçando os registros históricos? Pule em cima para impedir as trapalhadas do Seu Papelônio e continuar a busca pelos fragmentos."
+        }
+      ],
       closing: "Cada fragmento mostra vidas sendo transformadas!",
       fragments: [
-        {
-          x: 900,
-          hint: "Será que aprender a ler também fez parte dessa história?",
-          marco: "1964 - Cursos de alfabetização para trabalhadores."
-        },
-        {
-          x: 2100,
-          hint: "Como o conhecimento ajudou a transformar vidas?",
-          marco: "1972 - Centros esportivos para famílias industriárias."
-        },
-        {
-          x: 3300,
-          hint: "Além de estudar, qual outra atividade aproximava as pessoas?",
-          marco: "Expansão das atividades culturais."
-        },
-        {
-          x: 4700,
-          hint: "A diversão também pode fazer parte da educação?",
-          marco: "Atendimento às famílias dos trabalhadores."
-        },
-        {
-          x: 6000,
-          hint: "Quem mais foi beneficiado pelas ações do SESI?",
-          marco: "Educação, esporte e cultura transformando gerações."
-        }
+        { x: 900,  marco: "Em 1991, o SESI-MG, em parceria com a TV Globo, realizou a primeira edição do Ação Global, com serviços gratuitos, como emissão de documentos, assistência jurídica e prevenção da saúde. Em 1995, o programa passou a ser nacional." },
+        { x: 2100, marco: "Em 1995, foi lançado o Telecurso 2000, programa de TV em parceria com a Fundação Roberto Marinho, voltado aos ensinos de 1º e 2º graus e qualificação profissional." },
+        { x: 3300, marco: "Hoje ator premiado internacionalmente, o então iniciante Wagner Moura protagonizou a peça \"Abismo de Rosas\" na inauguração do teatro SESI Rio Vermelho, em Salvador (BA) em 1997." },
+        { x: 4700, marco: "Em 2001, o Sesinho foi modernizado, relançado em formato impresso e distribuído para alunos do SESI. No ano seguinte, virou desenho animado no Canal Futura." },
+        { x: 6000, marco: "Lançado em 2004, o Cozinha Brasil ensinava a se alimentar com qualidade e baixo custo. Em 2010, o programa passou a ser exportado para Moçambique, Uruguai, Guatemala e El Salvador." }
       ]
     },
     3: {
-      phaseLabel: "INOVAÇÃO E FUTURO",
-      enemyName: "DISQUETILDO",
-      enemyIntro: "Disquetildo entrou no sistema! Recupere os fragmentos antes que ele os transforme em pixels! 🎮",
-      sesinhoReaction: "Rápido! Antes que tudo vire código binário!",
+      phaseLabel: "FRONTEIRA DO FUTURO",
+      phaseIntro: "A consolidação do SESI em inovação, ensino de ponta e qualidade de vida. \nDo protagonismo na robótica à excelência nos serviços de saúde, o SESI chega aos 80 anos. Complete o jogo com os últimos 5 fragmentos.",
+      enemyIntros: [
+        {
+          name: "DR. DISQUESTRANHO",
+          img: "imagens/personagens/disquetildo-intro.png",
+          text: "Um disquete travando o sistema? Essa mídia está ultrapassada! Pule em cima para desmagnetizar o Dr. Disquestranho e liberar o caminho."
+        },
+        {
+          name: "ZÉ DRONINHO",
+          img: "imagens/personagens/ze-droninho-intro.png",
+          text: "Esse aqui começou cedo! O Zé Droninho está bloqueando os fragmentos mais altos. Pule em cima para desviar dos voos rasantes e salvar a história."
+        }
+      ],
       closing: "Falta pouco para completar os 80 anos de história!",
       fragments: [
-        {
-          x: 900,
-          hint: "Como a tecnologia ajudou a proteger os trabalhadores?",
-          marco: "1985 - Programas de segurança nas fábricas."
-        },
-        {
-          x: 2100,
-          hint: "Quantas conquistas cabem em meio século de história?",
-          marco: "1996 - SESI completa 50 anos."
-        },
-        {
-          x: 3500,
-          hint: "O que acontece quando educação e tecnologia se unem?",
-          marco: "2008 - Expansão das escolas de Ensino Médio com foco em ciência e tecnologia."
-        },
-        {
-          x: 5000,
-          hint: "Robôs também fazem parte desta aventura?",
-          marco: "2013 - Investimento em torneios de robótica."
-        },
-        {
-          x: 6200,
-          hint: "Qual será o segredo para continuar transformando o futuro?",
-          marco: "Hoje: líder em educação, saúde, bem-estar e segurança do trabalho."
-        }
+        { x: 900,  marco: "O SESI começou a investir na robótica educacional desde o início dos anos 2000. A primeira parceria com a FIRST® foi em 2012, para o FLL. Em 2018, a colaboração foi ampliada para o FTC; em 2022, para o FRC." },
+        { x: 2100, marco: "A Nova EJA e a EJA Profissionalizante foram aprovadas no Conselho Nacional de Educação, em caráter experimental, em 2016. Os novos modelos passaram a ser ofertados no ano seguinte. Em 2023, foram aprovados de forma definitiva." },
+        { x: 3500, marco: "Adotada pelo SESI a partir de 2017, a metodologia educacional STEAM (sigla em inglês para Ciência, Tecnologia, Engenharia, Artes e Matemática) tem como objetivo estimular o aprendizado de forma integrada e voltada à resolução de problemas reais." },
+        { x: 5000, marco: "O SESI Lab, nosso querido espaço que conecta Tecnologia, Ciência e Artes, foi aberto em 2022 e já vai fazer 4 anos que estimula a gente a imaginar e criar futuros possíveis." },
+        { x: 6200, marco: "A II Corrida Nacional do SESI, em 2026, teve mais de 60 mil inscritos, um salto de 74% em relação a 2025. A edição deste ano também contou com categoria para atletas paralímpicos." }
       ]
     }
   };
@@ -666,15 +1089,22 @@ Ajude o Sesinho a recuperá-los e revele a placa comemorativa dos 80 anos do SES
     phaseFragments: 0,
 
     foundMilestones: {1: [], 2: [], 3: []},
+    collectedFragmentIds: new Set(),
     enemyIntroShown: new Set(),
   };
 
-  const GROUND_HEIGHT = 40;
+  // Ajuste por fase para alinhar melhor o chão visual
+  const GROUND_HEIGHT_BY_LEVEL = { 1: 40, 2: 40, 3: 28 };
+  function getGroundHeight() {
+    return GROUND_HEIGHT_BY_LEVEL[game.level] ?? 40;
+  }
+  const FRAGMENT_DRAW_SCALE = 2.4;
+  const FRAGMENT_HIT_EXTRA = 8; 
   const PLAYER_DRAW_SCALE = 1.32;
   const ENEMY_DRAW_SCALE = 1.28;
   const SPRITE_COLS = 4;
 
-  function groundY() { return canvas.height - GROUND_HEIGHT; }
+  function groundY() { return canvas.height - getGroundHeight(); }
 
   const ANIM = {
     idle: { rowY: 24,  rowH: 322, frames: 4, speed: 12 },
@@ -695,12 +1125,147 @@ Ajude o Sesinho a recuperá-los e revele a placa comemorativa dos 80 anos do SES
     invincible: 0,
   };
 
+  /* ===== Efeitos sonoros ===== */
+  const SFX = (() => {
+    let ctx = null;
+    function ac(){
+      if (!ctx) {
+        const AC = window.AudioContext || window.webkitAudioContext;
+        if (AC) ctx = new AC();
+      }
+      return ctx;
+    }
+    function resume(){
+      const a = ac();
+      if (a && a.state === 'suspended') a.resume();
+    }
+    function tone({ freq = 440, freqEnd = null, type = 'square', dur = 0.12, vol = 0.2, delay = 0 }){
+      const a = ac();
+      if (!a) return;
+      const t0 = a.currentTime + delay;
+      const osc = a.createOscillator();
+      const gain = a.createGain();
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, t0);
+      if (freqEnd) osc.frequency.exponentialRampToValueAtTime(Math.max(1, freqEnd), t0 + dur);
+      gain.gain.setValueAtTime(0.0001, t0);
+      gain.gain.exponentialRampToValueAtTime(vol, t0 + 0.012);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+      osc.connect(gain).connect(a.destination);
+      osc.start(t0);
+      osc.stop(t0 + dur + 0.03);
+    }
+    function crowd({ dur = 1.6, peak = 0.18, delay = 0 }){
+      const a = ac();
+      if (!a) return;
+      const t0 = a.currentTime + delay;
+      const frames = Math.floor(a.sampleRate * dur);
+      const buffer = a.createBuffer(1, frames, a.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < frames; i++) data[i] = Math.random() * 2 - 1;
+      const src = a.createBufferSource();
+      src.buffer = buffer;
+      const bp = a.createBiquadFilter();
+      bp.type = 'bandpass';
+      bp.frequency.setValueAtTime(900, t0);
+      bp.frequency.linearRampToValueAtTime(1600, t0 + dur * 0.5);
+      bp.frequency.linearRampToValueAtTime(1100, t0 + dur);
+      bp.Q.value = 0.6;
+      const gain = a.createGain();
+      gain.gain.setValueAtTime(0.0001, t0);
+      gain.gain.exponentialRampToValueAtTime(peak, t0 + 0.18);
+      gain.gain.setValueAtTime(peak, t0 + dur * 0.55);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+      const lfo = a.createOscillator();
+      const lfoGain = a.createGain();
+      lfo.frequency.value = 11;
+      lfoGain.gain.value = peak * 0.4;
+      lfo.connect(lfoGain).connect(gain.gain);
+      src.connect(bp).connect(gain).connect(a.destination);
+      lfo.start(t0);
+      src.start(t0);
+      src.stop(t0 + dur + 0.05);
+      lfo.stop(t0 + dur + 0.05);
+    }
+    return {
+      resume,
+      jump(){ tone({ freq: 320, freqEnd: 660, type: 'square', dur: 0.18, vol: 0.16 }); },
+      star(){
+        tone({ freq: 880, freqEnd: 1320, type: 'triangle', dur: 0.10, vol: 0.16 });
+        tone({ freq: 1320, type: 'triangle', dur: 0.10, vol: 0.13, delay: 0.07 });
+      },
+      stomp(){
+        tone({ freq: 240, freqEnd: 60, type: 'sawtooth', dur: 0.18, vol: 0.22 });
+        tone({ freq: 1000, freqEnd: 1500, type: 'square', dur: 0.08, vol: 0.10, delay: 0.02 });
+      },
+      fragment(){
+        tone({ freq: 523, type: 'triangle', dur: 0.5, vol: 0.15 });
+        tone({ freq: 659, type: 'triangle', dur: 0.5, vol: 0.14, delay: 0.10 });
+        tone({ freq: 784, type: 'triangle', dur: 0.55, vol: 0.14, delay: 0.20 });
+      },
+      life(){ tone({ freq: 660, freqEnd: 990, type: 'triangle', dur: 0.25, vol: 0.17 }); },
+      hurt(){ tone({ freq: 300, freqEnd: 110, type: 'sawtooth', dur: 0.32, vol: 0.20 }); },
+      type(){
+        tone({ freq: 1700, type: 'square', dur: 0.025, vol: 0.10 });
+        tone({ freq: 420, freqEnd: 180, type: 'square', dur: 0.04, vol: 0.08 });
+      },
+      tick(){ tone({ freq: 720, type: 'square', dur: 0.03, vol: 0.07 }); },
+      result(){
+        tone({ freq: 523, type: 'triangle', dur: 0.45, vol: 0.16 });
+        tone({ freq: 659, type: 'triangle', dur: 0.45, vol: 0.15, delay: 0.12 });
+        tone({ freq: 784, type: 'triangle', dur: 0.45, vol: 0.15, delay: 0.24 });
+        tone({ freq: 1047, type: 'triangle', dur: 0.6, vol: 0.16, delay: 0.36 });
+      },
+      win(){
+        crowd({ dur: 2.2, peak: 0.16 });
+        crowd({ dur: 1.4, peak: 0.10, delay: 0.9 });
+        const notes = [523, 659, 784, 1047, 1319, 1568, 2093];
+        notes.forEach((f, i) => {
+          tone({ freq: f, type: 'square', dur: 0.16, vol: 0.12, delay: i * 0.11 });
+          tone({ freq: f, type: 'triangle', dur: 0.28, vol: 0.10, delay: i * 0.11 });
+        });
+        [1047, 1319, 1568, 2093].forEach(f =>
+          tone({ freq: f, type: 'triangle', dur: 1.2, vol: 0.11, delay: 0.85 })
+        );
+        tone({ freq: 1760, freqEnd: 2640, type: 'square', dur: 0.5, vol: 0.08, delay: 0.85 });
+      },
+      fail(){
+        tone({ freq: 392, type: 'sawtooth', dur: 0.35, vol: 0.16 });
+        tone({ freq: 349, type: 'sawtooth', dur: 0.35, vol: 0.16, delay: 0.32 });
+        tone({ freq: 311, type: 'sawtooth', dur: 0.35, vol: 0.16, delay: 0.64 });
+        tone({ freq: 262, freqEnd: 196, type: 'sawtooth', dur: 0.9, vol: 0.18, delay: 0.96 });
+      }
+    };
+  })();
+
   const keys = {};
   document.addEventListener('keydown', e => {
+    SFX.resume();
+    if (musicEnabled) playMusic();
+
+    if (e.code === 'Enter' || e.code === 'NumpadEnter' || e.code === 'Escape') {
+      if (handleEnterDismiss()) {
+        e.preventDefault();
+        return;
+      }
+    }
     keys[e.code] = true;
     if (e.code.startsWith('Arrow') || e.code === 'Space') e.preventDefault();
   });
   document.addEventListener('keyup', e => { keys[e.code] = false; });
+
+  function handleEnterDismiss() {
+    if (!gameModal.classList.contains('hidden')) { gameModalClose.click(); return true; }
+    if (!tutorialOverlay.classList.contains('hidden')) { btnTutorial.click(); return true; }
+    if (!winOverlay.classList.contains('hidden')) { btnWin.click(); return true; }
+    if (!resultOverlay.classList.contains('hidden')) { btnResult.click(); return true; }
+    if (screenEl.style.display !== 'none') {
+      if (isTypewriting()) { finishTypewriter(); return true; }
+      btnStart.click();
+      return true;
+    }
+    return false;
+  }
 
   const GRAVITY = 0.55;
   const JUMP_FORCE = -13;
@@ -717,6 +1282,7 @@ Ajude o Sesinho a recuperá-los e revele a placa comemorativa dos 80 anos do SES
   let toastTimeout = null;
   let storyTimeout = null;
   let typewriterTimer = null;
+  let twState = null;
   const particles = [];
 
   const offscreen = document.createElement('canvas');
@@ -741,72 +1307,19 @@ Ajude o Sesinho a recuperá-los e revele a placa comemorativa dos 80 anos do SES
       .replaceAll("'","&#039;");
   }
 
-  function formatScreenDesc(desc) {
-    const lines = String(desc)
-      .split('\n')
-      .map(l => l.trimEnd())
-      .filter(l => l.length);
-
-    const isStrongLine = (line) => {
-      const t = line.toUpperCase();
-      return (
-        t.startsWith('FASE ') ||
-        t === 'MARCOS ENCONTRADOS:' ||
-        t === 'MARCOS ENCONTRADOS'
-      );
-    };
-
-    return `
-      <div class="screen-desc-wrap">
-        <div class="desc-card">
-          ${lines.map(line => `
-            <div class="line ${isStrongLine(line) ? 'line-strong' : ''}" data-full="${escapeHtml(line)}">
-              <span class="tw-text"></span><span class="tw-caret">▌</span>
-            </div>
-          `).join('')}
-        </div>
-      </div>
-    `;
-  }
-
-  function runTypewriter() {
-    clearTimeout(typewriterTimer);
-    const lineEls = [...screenDesc.querySelectorAll('.line')];
-    if (!lineEls.length) return;
-
-    lineEls.forEach(el => {
-      const t = el.querySelector('.tw-text');
-      if (t) t.textContent = '';
-      el.classList.remove('tw-active', 'tw-final');
-    });
-
-    let li = 0, ci = 0;
-    const charSpeed = 45;
-    const linePause = 420;
-    lineEls[0].classList.add('tw-active');
-
-    function step() {
-      const el = lineEls[li];
-      const txtEl = el.querySelector('.tw-text');
-      const full = el.dataset.full || '';
-
-      if (ci <= full.length) {
-        txtEl.textContent = full.slice(0, ci);
-        ci++;
-        typewriterTimer = setTimeout(step, charSpeed);
-      } else {
-        el.classList.remove('tw-active');
-        li++; ci = 0;
-        if (li < lineEls.length) {
-          lineEls[li].classList.add('tw-active');
-          typewriterTimer = setTimeout(step, linePause);
-        } else {
-          lineEls[lineEls.length - 1].classList.add('tw-final');
-        }
-      }
+  function configureButton(iconEl, labelEl, iconSrc, label) {
+    if (iconSrc) {
+      iconEl.src = iconSrc;
+      iconEl.classList.remove('hidden');
+    } else {
+      iconEl.classList.add('hidden');
     }
-
-    step();
+    if (label) {
+      labelEl.textContent = label;
+      labelEl.classList.remove('hidden');
+    } else {
+      labelEl.classList.add('hidden');
+    }
   }
 
   function popFX(text, worldX, worldY) {
@@ -832,11 +1345,12 @@ Ajude o Sesinho a recuperá-los e revele a placa comemorativa dos 80 anos do SES
     setTimeout(() => el.remove(), 700);
   }
 
-  function showFragmentToast(marco) {
-    fragmentMarco.textContent = marco;
+  function showFragmentToast(msg, title = 'AVISO') {
+    fragmentToastTitle.textContent = title;
+    fragmentMarco.textContent = msg;
     fragmentToast.classList.remove('hidden');
     clearTimeout(toastTimeout);
-    toastTimeout = setTimeout(() => fragmentToast.classList.add('hidden'), 9000);
+    toastTimeout = setTimeout(() => fragmentToast.classList.add('hidden'), 5000);
   }
 
   function hideStoryBubble() {
@@ -845,31 +1359,204 @@ Ajude o Sesinho a recuperá-los e revele a placa comemorativa dos 80 anos do SES
     storyPanel.classList.remove('tail-left', 'tail-right');
   }
 
-  function showScreen(title, desc, btnText, callback, opts = {}) {
-    screenTitle.innerHTML = String(title).toUpperCase().replaceAll('\n', '<br>');
-    screenDesc.innerHTML = formatScreenDesc(desc);
-    runTypewriter();
-    btnStart.textContent = btnText;
+  function typewriterText(el, text, speed = 24) {
+    clearInterval(typewriterTimer);
+    typewriterTimer = null;
+    el.textContent = '';
+    const fullText = String(text);
+    const chars = fullText.split('');
+    twState = { el, text: fullText };
+    const cursor = document.createElement('span');
+    cursor.className = 'tw-cursor';
+    cursor.textContent = '▌';
+    el.appendChild(cursor);
+    let i = 0;
+    typewriterTimer = setInterval(() => {
+      if (i >= chars.length) {
+        clearInterval(typewriterTimer);
+        typewriterTimer = null;
+        setTimeout(() => cursor.remove(), 700);
+        return;
+      }
+      const ch = chars[i++];
+      const node = ch === '\n' ? document.createElement('br') : document.createTextNode(ch);
+      el.insertBefore(node, cursor);
+      if (ch !== '\n' && ch !== ' ' && (i % 2 === 0)) SFX.type();
+    }, speed);
+  }
 
-    if (opts.artSrc) {
-      screenArt.src = opts.artSrc;
-      screenArtWrap.classList.remove('hidden');
+  function isTypewriting() {
+    return typewriterTimer !== null;
+  }
+
+  function finishTypewriter() {
+    if (typewriterTimer) {
+      clearInterval(typewriterTimer);
+      typewriterTimer = null;
+    }
+    if (twState && twState.el) {
+      twState.el.innerHTML = escapeHtml(twState.text).replaceAll('\n', '<br>');
+    }
+  }
+
+  function stopTypewriter() {
+    if (typewriterTimer) {
+      clearInterval(typewriterTimer);
+      typewriterTimer = null;
+    }
+    const cursor = screenBoxText.querySelector('.tw-cursor');
+    if (cursor) cursor.remove();
+  }
+
+  function countUp(el, target, suffix = '', duration = 900) {
+    const start = performance.now();
+    let last = -1;
+    function step(now) {
+      const t = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
+      const val = Math.round(eased * target);
+      if (val !== last) {
+        last = val;
+        el.textContent = `${val}${suffix}`;
+        el.style.transform = `scale(${1 + 0.16 * (1 - t)})`;
+        if (val > 0 && t < 1) SFX.tick();
+      }
+      if (t < 1) requestAnimationFrame(step);
+      else {
+        el.textContent = `${target}${suffix}`;
+        el.style.transform = 'scale(1)';
+      }
+    }
+    el.textContent = `0${suffix}`;
+    el.style.transform = 'scale(1.16)';
+    requestAnimationFrame(step);
+  }
+
+  function showScreen(title, text, btnLabel, callback, opts = {}) {
+    setMusicMode('screen');
+
+    clearInterval(typewriterTimer);
+    typewriterTimer = null;
+    screenEl.classList.toggle('phase-intro', !!opts.phaseIntro);
+
+    if (opts.titleScreen) {
+      screenEl.classList.add('title-bg');
+      screenEl.classList.remove('intro-bg');
+      screenEl.style.background = '';
+      screenBox.classList.add('hidden');
     } else {
-      screenArt.src = sesinhoSoloImg.src;
-      screenArtWrap.classList.remove('hidden');
+      screenEl.classList.remove('title-bg');
+      screenEl.classList.add('intro-bg');
+      if (opts.bgImage) {
+        screenEl.style.background =
+          `linear-gradient(rgba(4,10,24,.62), rgba(4,10,24,.78)), url('${opts.bgImage}') center/cover no-repeat`;
+      } else {
+        screenEl.style.background = '';
+      }
+      screenBox.classList.remove('hidden');
+      screenBoxTitle.innerHTML = String(title).toUpperCase().replaceAll('\n', '<br>');
+      typewriterText(screenBoxText, text);
+
+      if (opts.showFragments) {
+        screenBoxFrags.innerHTML = '';
+        for (let i = 1; i <= 15; i++) {
+          const img = document.createElement('img');
+          img.src = `imagens/fragmentos/fragmento-${i}.png`;
+          img.alt = `Fragmento ${i}`;
+          screenBoxFrags.appendChild(img);
+        }
+        screenBoxFrags.classList.remove('hidden');
+      } else {
+        screenBoxFrags.classList.add('hidden');
+        screenBoxFrags.innerHTML = '';
+      }
     }
 
-    if (opts.titleScreen) screenEl.classList.add('title-bg');
-    else screenEl.classList.remove('title-bg');
-
-    if (opts.useIntroBg) screenEl.classList.add('intro-bg');
-    else screenEl.classList.remove('intro-bg');
-
+    configureButton(btnStartIcon, btnStartLabel, opts.btnIcon, btnLabel);
     screenEl.style.display = 'flex';
+
     btnStart.onclick = () => {
-      clearTimeout(typewriterTimer);
+      SFX.resume();
+      if (musicEnabled) playMusic();
+      stopTypewriter();
       screenEl.style.display = 'none';
       callback();
+    };
+  }
+
+  function showPhaseStartScreen(level, onBegin) {
+    const p = PHASES[level];
+    showScreen(`FASE ${level} - ${p.phaseLabel}`, p.phaseIntro, 'COMEÇAR', onBegin, {
+      bgImage: `imagens/cenarios/tela-fase-${level}.png`,
+      phaseIntro: true
+    });
+  }
+
+  function showTutorial(onDone) {
+    setMusicMode('screen');
+    tutorialOverlay.classList.remove('hidden');
+    controlsHint.classList.add('highlight');
+    btnTutorial.onclick = () => {
+      tutorialOverlay.classList.add('hidden');
+      controlsHint.classList.remove('highlight');
+      onDone();
+    };
+  }
+
+  function showResultScreen(level, onNext) {
+    setMusicMode('screen');
+
+    resultTitle.textContent = `RESULTADO DA FASE ${level}`;
+    resultStars.textContent = `0/80`;
+    resultFragments.textContent = `0/5`;
+
+    resultOverlay.style.background =
+      `linear-gradient(rgba(4,10,24,.72), rgba(4,10,24,.86)), url('imagens/cenarios/tela-fase-${level}.png') center/cover no-repeat`;
+    resultSpeech.src = `imagens/personagens/fala-sesinho-fase-${level}.png`;
+    resultSpeech.classList.remove('hidden');
+
+    resultFragImgs.innerHTML = '';
+    fragments.filter(f => f.collected).forEach(f => {
+      const img = document.createElement('img');
+      img.src = `imagens/fragmentos/fragmento-${f.globalId}.png`;
+      img.alt = `Fragmento ${f.globalId}`;
+      resultFragImgs.appendChild(img);
+    });
+
+    btnResultLabel.textContent = level < 3 ? 'Próxima fase →' : 'Finalizar →';
+    resultOverlay.classList.remove('hidden');
+
+    SFX.result();
+    countUp(resultStars, game.phaseStars, '/80', 1100);
+    setTimeout(() => countUp(resultFragments, game.phaseFragments, '/5', 700), 450);
+
+    btnResult.onclick = () => {
+      resultOverlay.classList.add('hidden');
+      onNext();
+    };
+  }
+
+  function showGameModal(variant, imgSrc, title, text, onClose) {
+    setMusicMode('screen');
+
+    gameModal.classList.remove('hidden', 'modal-fragment', 'modal-enemy');
+    gameModal.classList.add(variant === 'enemy' ? 'modal-enemy' : 'modal-fragment');
+
+    gameModalImgs.innerHTML = '';
+    const srcs = Array.isArray(imgSrc) ? imgSrc : (imgSrc ? [imgSrc] : []);
+    srcs.forEach(src => {
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = title;
+      gameModalImgs.appendChild(img);
+    });
+
+    gameModalTitle.innerHTML = String(title).toUpperCase().replaceAll('\n', '<br>');
+    gameModalText.innerHTML = String(text).replaceAll('\n', '<br>');
+
+    gameModalClose.onclick = () => {
+      gameModal.classList.add('hidden');
+      if (onClose) onClose();
     };
   }
 
@@ -885,10 +1572,10 @@ Ajude o Sesinho a recuperá-los e revele a placa comemorativa dos 80 anos do SES
     if (bg.complete && bg.naturalWidth > 0) {
       const W = canvas.width, H = canvas.height;
       const scale = H / bg.naturalHeight;
-      const scaledW = bg.naturalWidth * scale;
-      const parallaxX = -(game.cameraX * 0.3) % scaledW;
-      for (let x = parallaxX; x < W + scaledW; x += scaledW) {
-        ctx.drawImage(bg, x, 0, scaledW, H);
+      const scaledW = Math.ceil(bg.naturalWidth * scale);
+      let startX = Math.floor(-(game.cameraX * 0.3) % scaledW) - scaledW;
+      for (let x = startX; x < W + scaledW; x += scaledW) {
+        ctx.drawImage(bg, Math.floor(x), 0, scaledW + 1, H);
       }
     } else {
       const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
@@ -1073,22 +1760,13 @@ Ajude o Sesinho a recuperá-los e revele a placa comemorativa dos 80 anos do SES
     storyPanel.style.top = `${by}px`;
   }
 
-  function showHint(fragmentObj) {
-    storyTitle.textContent = `FRAGMENTO ${fragmentObj.id + 1}`;
-    storyText.textContent = `“${fragmentObj.hint}”`;
-    storyPanel.classList.remove('hidden');
-
-    clearTimeout(storyTimeout);
-    storyTimeout = setTimeout(() => storyPanel.classList.add('hidden'), 7000);
-    updateStoryPosition('right');
-  }
-
   function buildLevel(lvl) {
     const ground = groundY();
     game.levelWidth = 7000;
     goalX = game.levelWidth - 120;
 
-    platforms = [{ x: 0, y: ground, w: game.levelWidth, h: GROUND_HEIGHT }];
+    platforms = [{ x: 0, y: ground, w: game.levelWidth, h: getGroundHeight() }];
+
     const pfDefs = [
       { x: 300, y: ground - 100, w: 160 }, { x: 550, y: ground - 180, w: 120 },
       { x: 800, y: ground - 120, w: 200 }, { x: 1100, y: ground - 200, w: 140 },
@@ -1104,7 +1782,6 @@ Ajude o Sesinho a recuperá-los e revele a placa comemorativa dos 80 anos do SES
     ];
     pfDefs.forEach(p => platforms.push({ ...p, h: 18 }));
 
-    // estrelas (80 por fase)
     const candidates = [];
     platforms.slice(1).forEach(p => {
       for (let x = p.x + 20; x < p.x + p.w - 20; x += 36) candidates.push({ x, y: p.y - 24 });
@@ -1117,20 +1794,18 @@ Ajude o Sesinho a recuperá-los e revele a placa comemorativa dos 80 anos do SES
     stars = candidates.slice(0, 80).map(s => ({ ...s, collected: false }));
     game.phaseStars = 0;
 
-    // fragmentos (5 por fase)
     fragments = PHASES[lvl].fragments.map((f, i) => ({
       id: i,
+      globalId: (lvl - 1) * 5 + i + 1,
       x: f.x,
       y: ground - 130 - (i % 2) * 50,
       w: 34,
       h: 40,
-      hint: f.hint,
       marco: f.marco,
       collected: false
     }));
     game.phaseFragments = 0;
 
-    // vida extra (1 por fase, para recuperar vidas perdidas)
     lifePickup = {
       x: Math.round(game.levelWidth / 2),
       y: ground - 150,
@@ -1139,7 +1814,6 @@ Ajude o Sesinho a recuperá-los e revele a placa comemorativa dos 80 anos do SES
       collected: false
     };
 
-    // inimigos
     enemies = [];
     const positions = [600, 1050, 1450, 1850, 2250, 2650, 3050, 3450, 3850, 4250, 4650, 5050, 5450, 5850, 6250, 6650];
 
@@ -1192,44 +1866,38 @@ Ajude o Sesinho a recuperá-los e revele a placa comemorativa dos 80 anos do SES
     fragmentToast.classList.add('hidden');
   }
 
-  function resolvePlayerPlatforms() {
+  // colisão refinada: evita "flutuar" na quina da plataforma
+  function resolvePlayerPlatforms(prevX, prevY) {
     player.onGround = false;
-    for (let i = 0; i < platforms.length; i++) {
+
+    const prevBottom = prevY + player.h;
+    const currBottom = player.y + player.h;
+
+    // chão principal
+    const g = platforms[0];
+    if (prevBottom <= g.y + 8 && currBottom >= g.y && player.vy >= 0) {
+      player.y = g.y - player.h;
+      player.vy = 0;
+      player.onGround = true;
+    }
+
+    // plataformas one-way (topo)
+    const feetInset = 10;
+    const footL = player.x + feetInset;
+    const footR = player.x + player.w - feetInset;
+
+    for (let i = 1; i < platforms.length; i++) {
       const p = platforms[i];
-      if (!rectIntersect(player, p)) continue;
 
-      if (i === 0) {
-        const overlapLeft  = (player.x + player.w) - p.x;
-        const overlapRight = (p.x + p.w) - player.x;
-        const overlapTop   = (player.y + player.h) - p.y;
-        const overlapBot   = (p.y + p.h) - player.y;
-        const minH = Math.min(overlapLeft, overlapRight);
-        const minV = Math.min(overlapTop, overlapBot);
+      const overlapX = Math.min(footR, p.x + p.w) - Math.max(footL, p.x);
+      if (overlapX <= 12) continue;
 
-        if (minV < minH) {
-          if (overlapTop < overlapBot) {
-            player.y = p.y - player.h;
-            player.vy = 0;
-            player.onGround = true;
-          } else {
-            player.y = p.y + p.h;
-            player.vy = 0;
-          }
-        } else {
-          if (overlapLeft < overlapRight) {
-            player.x = p.x - player.w;
-            player.vx = 0;
-          } else {
-            player.x = p.x + p.w;
-            player.vx = 0;
-          }
-        }
-      } else {
-        if (player.vy >= 0 && player.y + player.h / 2 < p.y + p.h / 2) {
-          player.y = p.y - player.h;
-          player.vy = 0;
-          player.onGround = true;
-        }
+      const comingFromAbove = prevBottom <= p.y + 6;
+      const crossedTop = currBottom >= p.y;
+      if (comingFromAbove && crossedTop && player.vy >= 0) {
+        player.y = p.y - player.h;
+        player.vy = 0;
+        player.onGround = true;
       }
     }
   }
@@ -1262,101 +1930,130 @@ Ajude o Sesinho a recuperá-los e revele a placa comemorativa dos 80 anos do SES
     }
   }
 
-  function checkFragmentProximityAndCollect() {
-    let nearest = null;
-    let minDist = Infinity;
+  function getFragmentHitbox(f) {
+    const bob = Math.sin(tick * 0.08 + f.id * 2) * 4;
 
-    for (const f of fragments) {
-      if (f.collected) continue;
-      const d = Math.abs(player.x - f.x);
-      if (d < minDist) { minDist = d; nearest = f; }
-    }
+    const boxW = f.w * FRAGMENT_DRAW_SCALE;
+    const boxH = f.h * FRAGMENT_DRAW_SCALE;
+    const boxX = f.x + (f.w - boxW) / 2;
+    const boxY = f.y + bob + (f.h - boxH);
 
-    if (nearest && minDist < 260) showHint(nearest);
-
-    for (const f of fragments) {
-      if (f.collected) continue;
-      if (rectIntersect(player, f)) {
-        f.collected = true;
-        game.fragmentsCollected++;
-        game.phaseFragments++;
-        game.foundMilestones[game.level].push(f.marco);
-
-        hideStoryBubble();
-        popFX("POW!", f.x, f.y - 12);
-        showFragmentToast(f.marco);
-        spawnStarParticle(f.x + f.w / 2, f.y + f.h / 2);
-
-        game.paused = true;
-        setTimeout(() => { game.paused = false; }, 800);
-        break;
-      }
-    }
+    return {
+      x: boxX - FRAGMENT_HIT_EXTRA / 2,
+      y: boxY - FRAGMENT_HIT_EXTRA / 2,
+      w: boxW + FRAGMENT_HIT_EXTRA,
+      h: boxH + FRAGMENT_HIT_EXTRA
+    };
   }
 
-  function maybeShowEnemyIntro() {
+  function checkFragmentProximityAndCollect() {
+  for (const f of fragments) {
+    if (f.collected) continue;
+
+    const hit = getFragmentHitbox(f);
+
+    if (rectIntersect(player, hit)) {
+      f.collected = true;
+      game.fragmentsCollected++;
+      game.phaseFragments++;
+      game.foundMilestones[game.level].push(f.marco);
+      game.collectedFragmentIds.add(f.globalId);
+
+      hideStoryBubble();
+      popFX("POW!", f.x, f.y - 12);
+      spawnStarParticle(f.x + f.w / 2, f.y + f.h / 2);
+      SFX.fragment();
+
+      game.paused = true;
+      showGameModal(
+        'fragment',
+        `imagens/fragmentos/fragmento-${f.globalId}.png`,
+        'FRAGMENTO RECUPERADO!',
+        f.marco,
+        () => {
+          game.paused = false;
+          setMusicMode('game');
+          requestFrame();
+        }
+      );
+      break;
+    }
+  }
+}
+
+function maybeShowEnemyIntro() {
     if (game.enemyIntroShown.has(game.level)) return;
     if (player.x <= 420) return;
 
     game.enemyIntroShown.add(game.level);
-    game.running = false;
+    game.paused = true;
+    setMusicMode('screen');
 
-    const artByLevel = {
-      1: enemyImgs.engrenildo.src,
-      2: enemyImgs.papelito.src,
-      3: enemyImgs.disquetildo.src
-    };
-
-    showScreen(
-      PHASES[game.level].enemyName,
-      `${PHASES[game.level].enemyIntro}\n\nSesinho: "${PHASES[game.level].sesinhoReaction}"`,
-      'CONTINUAR',
-      () => {
-        game.running = true;
+    const intros = PHASES[game.level].enemyIntros || [];
+    let idx = 0;
+    function showNext() {
+      if (idx >= intros.length) {
+        game.paused = false;
+        setMusicMode('game');
         requestFrame();
-      },
-      { artSrc: artByLevel[game.level], useIntroBg: false }
-    );
-  }
-
-  function buildPhaseResultText(level) {
-    const marcos = game.foundMilestones[level];
-    const lista = marcos.length ? marcos.map(m => `• ${m}`).join('\n') : '• Nenhum marco encontrado';
-
-    return `FASE ${level} : ${PHASES[level].phaseLabel}
-Estrelas coletadas: ${game.phaseStars}/80
-Fragmentos recuperados: ${game.phaseFragments}/5
-Você recuperou ${game.phaseFragments} de 5 fragmentos.
-
-MARCOS ENCONTRADOS:
-${lista}
-
-Sesinho: "${PHASES[level].closing}"`;
+        return;
+      }
+      const e = intros[idx++];
+      showGameModal('enemy', e.img, e.name, e.text, showNext);
+    }
+    showNext();
   }
 
   function levelComplete() {
-    if (game.phaseFragments < 5) {
-      showFragmentToast(`Faltam ${5 - game.phaseFragments} fragmento(s) para concluir a fase.`);
-      return;
-    }
-
     game.running = false;
     game.paused = true;
+    setMusicMode('screen');
 
-    const desc = buildPhaseResultText(game.level);
-
-    if (game.level < 3) {
-      showScreen(`RESULTADO DA FASE ${game.level}`, desc, 'PRÓXIMA FASE →', () => {
+    showResultScreen(game.level, () => {
+      if (game.level < 3) {
         game.level++;
-        buildLevel(game.level);
-        game.paused = false;
-        game.running = true;
-        updateHUD();
-        requestFrame();
-      }, { useIntroBg: false });
+        showPhaseStartScreen(game.level, () => {
+          buildLevel(game.level);
+          updateHUD();
+          game.paused = false;
+          game.running = true;
+          setMusicMode('game');
+          requestFrame();
+        });
+      } else {
+        endGame(true);
+      }
+    });
+  }
+
+  function showWinScreen() {
+    setMusicMode('screen');
+
+    const allCollected = game.fragmentsCollected >= 15;
+
+    if (allCollected) {
+      winSuccess.classList.remove('hidden');
+      winFail.classList.add('hidden');
+      SFX.win();
     } else {
-      endGame(true);
+      winSuccess.classList.add('hidden');
+      winFail.classList.remove('hidden');
+      SFX.fail();
+
+      winFailFrags.innerHTML = '';
+      [...game.collectedFragmentIds].sort((a, b) => a - b).forEach(id => {
+        const img = document.createElement('img');
+        img.src = `imagens/fragmentos/fragmento-${id}.png`;
+        img.alt = `Fragmento ${id}`;
+        winFailFrags.appendChild(img);
+      });
     }
+
+    winOverlay.classList.remove('hidden');
+    btnWin.onclick = () => {
+      winOverlay.classList.add('hidden');
+      startGame();
+    };
   }
 
   function endGame(won) {
@@ -1365,30 +2062,17 @@ Sesinho: "${PHASES[level].closing}"`;
     cancelAnimationFrame(raf);
     hideStoryBubble();
     fragmentToast.classList.add('hidden');
+    setMusicMode('screen');
 
     if (won) {
-      showScreen(
-        '🏆 MISSÃO CONCLUÍDA',
-        `Os 15 registros históricos foram recuperados.
-A placa comemorativa foi totalmente revelada: "SESI 80 ANOS".
-
-Total de estrelas: ${game.starsCollected}/240
-Total de fragmentos: ${game.fragmentsCollected}/15
-
-Há 80 anos, milhares de pessoas ajudam a transformar vidas por meio da educação, saúde, bem-estar e segurança.
-Hoje, essa história continua sendo escrita por pessoas como você.`,
-        'JOGAR NOVAMENTE',
-        startGame,
-        { useIntroBg: false, artSrc: sesinhoSoloImg.src }
-      );
+      showWinScreen();
     } else {
       showScreen(
         'GAME OVER',
         `Total de estrelas: ${game.starsCollected}/240
 Total de fragmentos: ${game.fragmentsCollected}/15`,
         'TENTAR NOVAMENTE',
-        startGame,
-        { useIntroBg: false, artSrc: sesinhoSoloImg.src }
+        startGame
       );
     }
   }
@@ -1397,6 +2081,7 @@ Total de fragmentos: ${game.fragmentsCollected}/15`,
     game.lives--;
     updateHUD();
     popFX(fell ? 'TCHIBUM!' : 'POF!', player.x + 8, player.y - 8);
+    SFX.hurt();
 
     if (game.lives <= 0) {
       endGame(false);
@@ -1412,6 +2097,7 @@ Total de fragmentos: ${game.fragmentsCollected}/15`,
 
     game.paused = false;
     game.running = true;
+    setMusicMode('game');
     requestFrame();
   }
 
@@ -1419,9 +2105,6 @@ Total de fragmentos: ${game.fragmentsCollected}/15`,
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawBackground();
 
-    // sem chão verde desenhado por cima
-
-    // plataformas
     platforms.slice(1).forEach(p => {
       const px = p.x - game.cameraX;
       if (px + p.w < 0 || px > canvas.width) return;
@@ -1433,7 +2116,6 @@ Total de fragmentos: ${game.fragmentsCollected}/15`,
       ctx.fillRect(px, p.y + p.h - 4, p.w, 4);
     });
 
-    // estrelas
     stars.forEach(s => {
       if (s.collected) return;
       const sx = s.x - game.cameraX;
@@ -1453,26 +2135,35 @@ Total de fragmentos: ${game.fragmentsCollected}/15`,
       ctx.stroke();
     });
 
-    // fragmentos
     fragments.forEach(f => {
       if (f.collected) return;
       const fx = f.x - game.cameraX;
       if (fx < -50 || fx > canvas.width + 50) return;
       const bob = Math.sin(tick * 0.08 + f.id * 2) * 4;
 
+      const img = fragmentImgs[f.globalId];
       ctx.save();
-      ctx.fillStyle = '#fff';
-      ctx.strokeStyle = '#003087';
-      ctx.lineWidth = 2;
-      ctx.fillRect(fx, f.y + bob, f.w, f.h);
-      ctx.strokeRect(fx, f.y + bob, f.w, f.h);
-      ctx.fillStyle = '#FFD700';
-      ctx.font = 'bold 20px sans-serif';
-      ctx.fillText('🧩', fx + 6, f.y + bob + 27);
+      if (img && img.complete && img.naturalWidth > 0) {
+        const scale = FRAGMENT_DRAW_SCALE;
+        const boxW = f.w * scale;
+        const boxH = f.h * scale;
+        const boxX = fx + (f.w - boxW) / 2;
+        const boxY = f.y + bob + (f.h - boxH);
+        ctx.imageSmoothingEnabled = true;
+        drawImageContainBottom(ctx, img, boxX, boxY, boxW, boxH);
+      } else {
+        ctx.fillStyle = '#fff';
+        ctx.strokeStyle = '#003087';
+        ctx.lineWidth = 2;
+        ctx.fillRect(fx, f.y + bob, f.w, f.h);
+        ctx.strokeRect(fx, f.y + bob, f.w, f.h);
+        ctx.fillStyle = '#FFD700';
+        ctx.font = 'bold 20px sans-serif';
+        ctx.fillText('🧩', fx + 6, f.y + bob + 27);
+      }
       ctx.restore();
     });
 
-    // vida extra (coração)
     if (lifePickup && !lifePickup.collected) {
       const lx = lifePickup.x - game.cameraX;
       if (lx > -50 && lx < canvas.width + 50) {
@@ -1507,7 +2198,11 @@ Total de fragmentos: ${game.fragmentsCollected}/15`,
       return;
     }
 
+    setMusicMode('game');
     tick++;
+
+    const prevX = player.x;
+    const prevY = player.y;
 
     let moving = false;
     if (keys['ArrowLeft'] || keys['KeyA']) {
@@ -1526,6 +2221,7 @@ Total de fragmentos: ${game.fragmentsCollected}/15`,
       player.vy = JUMP_FORCE;
       player.onGround = false;
       popFX('BOING!', player.x + player.w / 2, player.y - 10);
+      SFX.jump();
     }
 
     player.vy += GRAVITY;
@@ -1540,7 +2236,7 @@ Total de fragmentos: ${game.fragmentsCollected}/15`,
       return;
     }
 
-    resolvePlayerPlatforms();
+    resolvePlayerPlatforms(prevX, prevY);
 
     if (!player.onGround) player.anim = 'jump';
     else if (Math.abs(player.vx) > 3) player.anim = 'run';
@@ -1561,7 +2257,7 @@ Total de fragmentos: ${game.fragmentsCollected}/15`,
     game.cameraX = Math.max(0, Math.min(game.levelWidth - canvas.width, game.cameraX));
 
     maybeShowEnemyIntro();
-    if (!game.running) return;
+    if (game.paused) { drawScene(); raf = requestAnimationFrame(gameLoop); return; }
 
     let enemyHit = false;
     for (let i = enemies.length - 1; i >= 0; i--) {
@@ -1583,6 +2279,7 @@ Total de fragmentos: ${game.fragmentsCollected}/15`,
           popFX('POW!', e.x + e.w / 2, e.y - 10);
           spawnStarParticle(e.x + e.w / 2, e.y + 8);
           player.vy = -8;
+          SFX.stomp();
         } else {
           enemyHit = true;
         }
@@ -1602,6 +2299,7 @@ Total de fragmentos: ${game.fragmentsCollected}/15`,
         game.phaseStars++;
         popFX('ZUP!', s.x, s.y - 8);
         spawnStarParticle(s.x, s.y);
+        SFX.star();
       }
     }
 
@@ -1610,6 +2308,7 @@ Total de fragmentos: ${game.fragmentsCollected}/15`,
       if (game.lives < 3) {
         game.lives++;
         popFX('BOING!', lifePickup.x + lifePickup.w / 2, lifePickup.y - 8);
+        SFX.life();
         showFragmentToast('+1 vida! Continue firme na missão!');
       } else {
         showFragmentToast('Vidas já estão no máximo!');
@@ -1632,7 +2331,7 @@ Total de fragmentos: ${game.fragmentsCollected}/15`,
 
   function startGame() {
     cancelAnimationFrame(raf);
-    game.running = true;
+    game.running = false;
     game.paused = false;
     game.level = 1;
     game.lives = 3;
@@ -1642,37 +2341,49 @@ Total de fragmentos: ${game.fragmentsCollected}/15`,
     game.phaseStars = 0;
     game.phaseFragments = 0;
     game.foundMilestones = {1: [], 2: [], 3: []};
+    game.collectedFragmentIds.clear();
     game.enemyIntroShown.clear();
 
     particles.length = 0;
     hideStoryBubble();
     fragmentToast.classList.add('hidden');
+    winOverlay.classList.add('hidden');
+    resultSpeech.classList.add('hidden');
 
+    resizeCanvas();
     buildLevel(1);
     updateHUD();
-    requestFrame();
+    drawScene();
+
+    setMusicMode('screen');
+    showTutorial(() => {
+      game.running = true;
+      game.paused = false;
+      setMusicMode('game');
+      requestFrame();
+    });
   }
 
   // Wiring
   document.getElementById('btn-close').onclick = () => {
     game.running = false;
     cancelAnimationFrame(raf);
+    pauseMusic();
+    bgMusic.currentTime = 0;
     document.getElementById('modal-overlay').style.display = 'none';
   };
 
-  // Tela 1: tela inicial (somente imagem de fundo + botão JOGAR AGORA)
   function showTitleScreen() {
     showScreen('', '', '▶ JOGAR AGORA', showIntroScreen, { titleScreen: true });
   }
 
-  // Tela 2: introdução (texto + imagem do Sesinho) antes do jogo começar
   function showIntroScreen() {
     showScreen(
-      'SESINHO EM:\n FRAGMENTOS DA HISTÓRIA',
+      'FRAGMENTOS DA HISTÓRIA',
       INTRO_TEXT,
-      '▶ COMEÇAR',
-      startGame,
-      { useIntroBg: true, artSrc: sesinhoSoloImg.src }
+      '',
+      () => showPhaseStartScreen(1, startGame),
+      { btnIcon: ICON_CONTINUE, showFragments: true }
     );
   }
 
@@ -1691,5 +2402,3 @@ Total de fragmentos: ${game.fragmentsCollected}/15`,
     img.onerror = () => {};
   });
 </script>
-</body>
-</html>
